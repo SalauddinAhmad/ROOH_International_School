@@ -1,1 +1,1 @@
-ROOH_International_School
+ROOHInternationalSchool
