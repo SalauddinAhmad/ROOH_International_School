@@ -304,7 +304,7 @@ const Contact = () => {
                   <div className="text-center">
                     <MapPin className="h-12 w-12 mx-auto mb-4 text-[#F68949]" />
                     <h3 className="text-xl font-bold mb-2">Visit Our Campus</h3>
-                    <p className="text-[#FFE8D2]">123 Education Street, Dhanmondi, Dhaka</p>
+                    <p className="text-[#FFE8D2]">House 35, Road 05, Sector 13, Uttara, Dhaka</p>
                   </div>
                 </div>
                 <div className="p-6">
