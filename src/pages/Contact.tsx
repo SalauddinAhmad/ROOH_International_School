@@ -59,7 +59,7 @@ const Contact = () => {
     {
       icon: <MapPin className="h-6 w-6" />,
       title: "School Address",
-      details: ["Campus 01 - House 35, Road 05, Sector 13, Uttara, Dhaka. Campus 02 - House 11, Road 05, Sector 12, Uttara, Dhaka 1230.,"],
+      details: ["Campus 01 - House 35, Road 05, Sector 13, Uttara, Dhaka." , "Campus 02 - House 11, Road 05, Sector 12, Uttara, Dhaka 1230."],
       action: "Get Directions"
     },
     {
