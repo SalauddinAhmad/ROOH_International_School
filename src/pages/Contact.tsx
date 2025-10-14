@@ -59,13 +59,13 @@ const Contact = () => {
     {
       icon: <MapPin className="h-6 w-6" />,
       title: "School Address",
-      details: ["123 Education Street", "Dhanmondi, Dhaka-1205", "Bangladesh"],
+      details: ["Campus 01 - House 35, Road 05, Sector 13, Uttara, Dhaka."],
       action: "Get Directions"
     },
     {
       icon: <Phone className="h-6 w-6" />,
       title: "Phone Numbers",
-      details: ["+880 1XXX-XXXXXX", "+880 2-XXXXXXX", "Emergency: +880 1XXX-XXXXXX"],
+      details: ["+880 1896-061644", "+880 1896-061644", "Emergency: +880 1896-061644"],
       action: "Call Now"
     },
     {
