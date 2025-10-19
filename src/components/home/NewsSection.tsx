@@ -95,15 +95,15 @@ const NewsSection = () => {
                 <p className="text-[#303E3F] mb-6 leading-relaxed">
                   {newsItems[0].excerpt}
                 </p>
-                <button className="flex items-center text-[#F68949] font-medium hover:text-[#946F5C] transition-colors">
+                <Link 
+                  to={`/article/${newsItems[0].id}`}
+                  className="flex items-center text-[#F68949] font-medium hover:text-[#946F5C] transition-colors"
+                >
                   Read More
                   <ArrowRight className="ml-2 h-4 w-4" />
-                </button>
+                </Link>
               </div>
-                  <Link 
-                    to={`/article/${featuredNews.id}`}
-                    className="flex items-center text-[#F68949] font-medium hover:text-[#946F5C] transition-colors"
-                  >
+            </div>
           </div>
 
           {/* Side Articles */}
@@ -124,20 +124,20 @@ const NewsSection = () => {
                       <span className="bg-[#00393C] text-white px-2 py-1 rounded text-xs">
                         {item.category}
                       </span>
-                      <Link 
-                        to={`/article/${item.id}`}
-                        className="text-[#F68949] hover:text-[#946F5C] transition-colors text-sm font-medium"
-                      >
+                      <span className="text-[#303E3F] text-sm">
                         {formatDate(item.date)}
-                      </Link>
+                      </span>
                     </div>
-                    <h4 className="text-lg font-bold text-[#00393C] mb-2 leading-tight">
+                    <Link 
+                      to={`/article/${item.id}`}
+                      className="text-lg font-bold text-[#00393C] mb-2 leading-tight hover:text-[#F68949] transition-colors"
+                    >
                       {item.title}
-                    </h4>
+                    </Link>
                     <p className="text-[#303E3F] text-sm line-clamp-2">
                       {item.excerpt}
                     </p>
-                  </Link>
+                  </div>
                 </div>
               </div>
             ))}
