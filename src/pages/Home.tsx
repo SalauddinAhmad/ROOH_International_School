@@ -7,6 +7,7 @@ import GallerySection from '../components/home/GallerySection';
 import TestimonialsSection from '../components/home/TestimonialsSection';
 import NewsSection from '../components/home/NewsSection';
 import CampusTourSection from '../components/home/CampusTourSection';
+import VideoShowcaseSection from '../components/home/VideoShowcaseSection';
 
 const Home = () => {
   return (
@@ -18,6 +19,7 @@ const Home = () => {
       <GallerySection />
       <TestimonialsSection />
       <NewsSection />
+      <VideoShowcaseSection />
       <CampusTourSection />
     </div>
   );

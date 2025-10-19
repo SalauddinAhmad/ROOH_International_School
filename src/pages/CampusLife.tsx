@@ -1,43 +1,88 @@
 import React from 'react';
-import { Music, Palette, Trophy, Globe, Heart, Camera } from 'lucide-react';
+import { Music, Palette, Trophy, Globe, Heart, Camera, X } from 'lucide-react';
+import { useState } from 'react';
 
 const CampusLife = () => {
+  const [selectedActivity, setSelectedActivity] = useState<string | null>(null);
+
   const activities = [
     {
+      id: 'music',
       icon: <Music className="h-8 w-8" />,
       title: "Music & Performing Arts",
       description: "Choir, band, dance, and drama programs to nurture artistic talents and build confidence.",
-      image: "https://images.pexels.com/photos/8613076/pexels-photo-8613076.jpeg"
+      image: "https://images.pexels.com/photos/8613076/pexels-photo-8613076.jpeg",
+      gallery: [
+        "https://images.pexels.com/photos/8613076/pexels-photo-8613076.jpeg",
+        "https://images.pexels.com/photos/8613064/pexels-photo-8613064.jpeg",
+        "https://images.pexels.com/photos/8613061/pexels-photo-8613061.jpeg",
+        "https://images.pexels.com/photos/8613069/pexels-photo-8613069.jpeg"
+      ]
     },
     {
+      id: 'arts',
       icon: <Palette className="h-8 w-8" />,
       title: "Arts & Crafts",
       description: "Creative workshops including painting, sculpture, and traditional crafts to develop artistic skills.",
-      image: "https://images.pexels.com/photos/8612990/pexels-photo-8612990.jpeg"
+      image: "https://images.pexels.com/photos/8612990/pexels-photo-8612990.jpeg",
+      gallery: [
+        "https://images.pexels.com/photos/8612990/pexels-photo-8612990.jpeg",
+        "https://images.pexels.com/photos/8613076/pexels-photo-8613076.jpeg",
+        "https://images.pexels.com/photos/8613074/pexels-photo-8613074.jpeg",
+        "https://images.pexels.com/photos/8613067/pexels-photo-8613067.jpeg"
+      ]
     },
     {
+      id: 'sports',
       icon: <Trophy className="h-8 w-8" />,
       title: "Sports & Athletics",
       description: "Football, cricket, basketball, swimming, and athletics programs for physical development.",
-      image: "https://images.pexels.com/photos/8613059/pexels-photo-8613059.jpeg"
+      image: "https://images.pexels.com/photos/8613059/pexels-photo-8613059.jpeg",
+      gallery: [
+        "https://images.pexels.com/photos/8613059/pexels-photo-8613059.jpeg",
+        "https://images.pexels.com/photos/8613061/pexels-photo-8613061.jpeg",
+        "https://images.pexels.com/photos/8613064/pexels-photo-8613064.jpeg",
+        "https://images.pexels.com/photos/8613069/pexels-photo-8613069.jpeg"
+      ]
     },
     {
+      id: 'science',
       icon: <Globe className="h-8 w-8" />,
       title: "Science & Technology",
       description: "Science fairs, robotics clubs, and computer programming to inspire future innovators.",
-      image: "https://images.pexels.com/photos/8613067/pexels-photo-8613067.jpeg"
+      image: "https://images.pexels.com/photos/8613067/pexels-photo-8613067.jpeg",
+      gallery: [
+        "https://images.pexels.com/photos/8613067/pexels-photo-8613067.jpeg",
+        "https://images.pexels.com/photos/8613074/pexels-photo-8613074.jpeg",
+        "https://images.pexels.com/photos/8613076/pexels-photo-8613076.jpeg",
+        "https://images.pexels.com/photos/8612990/pexels-photo-8612990.jpeg"
+      ]
     },
     {
+      id: 'community',
       icon: <Heart className="h-8 w-8" />,
       title: "Community Service",
       description: "Volunteer programs and social initiatives to develop empathy and social responsibility.",
-      image: "https://images.pexels.com/photos/8613069/pexels-photo-8613069.jpeg"
+      image: "https://images.pexels.com/photos/8613069/pexels-photo-8613069.jpeg",
+      gallery: [
+        "https://images.pexels.com/photos/8613069/pexels-photo-8613069.jpeg",
+        "https://images.pexels.com/photos/8613064/pexels-photo-8613064.jpeg",
+        "https://images.pexels.com/photos/8613061/pexels-photo-8613061.jpeg",
+        "https://images.pexels.com/photos/8613059/pexels-photo-8613059.jpeg"
+      ]
     },
     {
+      id: 'media',
       icon: <Camera className="h-8 w-8" />,
       title: "Photography & Media",
       description: "School magazine, photography club, and media production to enhance communication skills.",
-      image: "https://images.pexels.com/photos/8613074/pexels-photo-8613074.jpeg"
+      image: "https://images.pexels.com/photos/8613074/pexels-photo-8613074.jpeg",
+      gallery: [
+        "https://images.pexels.com/photos/8613074/pexels-photo-8613074.jpeg",
+        "https://images.pexels.com/photos/8613076/pexels-photo-8613076.jpeg",
+        "https://images.pexels.com/photos/8612990/pexels-photo-8612990.jpeg",
+        "https://images.pexels.com/photos/8613067/pexels-photo-8613067.jpeg"
+      ]
     }
   ];
 
@@ -77,6 +122,16 @@ const CampusLife = () => {
     "https://images.pexels.com/photos/8613076/pexels-photo-8613076.jpeg"
   ];
 
+  const openActivityGallery = (activityId: string) => {
+    setSelectedActivity(activityId);
+  };
+
+  const closeActivityGallery = () => {
+    setSelectedActivity(null);
+  };
+
+  const selectedActivityData = activities.find(activity => activity.id === selectedActivity);
+
   return (
     <div className="pt-20">
       {/* Hero Section */}
@@ -109,7 +164,8 @@ const CampusLife = () => {
             {activities.map((activity, index) => (
               <div key={index} className="group bg-[#FFE8D2] rounded-2xl overflow-hidden hover:shadow-2xl transition-all duration-300 hover:scale-105">
                 <img
-                  src={activity.image}
+                className="group bg-[#FFE8D2] rounded-2xl overflow-hidden hover:shadow-2xl transition-all duration-300 hover:scale-105 cursor-pointer"
+                onClick={() => openActivityGallery(activity.id)}
                   alt={activity.title}
                   className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-300"
                 />
@@ -119,12 +175,47 @@ const CampusLife = () => {
                     <h3 className="text-xl font-bold text-[#00393C]">{activity.title}</h3>
                   </div>
                   <p className="text-[#303E3F] leading-relaxed">{activity.description}</p>
+                  <div className="text-[#F68949] font-medium text-sm">
+                    Click to view gallery →
+                  </div>
                 </div>
               </div>
             ))}
           </div>
         </div>
       </section>
+
+      {/* Activity Gallery Modal */}
+      {selectedActivity && selectedActivityData && (
+        <div className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4">
+          <div className="relative max-w-6xl max-h-full overflow-auto bg-white rounded-2xl">
+            <div className="p-6">
+              <div className="flex items-center justify-between mb-6">
+                <h3 className="text-2xl font-bold text-[#00393C]">
+                  {selectedActivityData.title} Gallery
+                </h3>
+                <button
+                  onClick={closeActivityGallery}
+                  className="bg-[#F68949] hover:bg-[#946F5C] text-white p-2 rounded-full transition-colors"
+                >
+                  <X className="h-6 w-6" />
+                </button>
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {selectedActivityData.gallery.map((image, index) => (
+                  <img
+                    key={index}
+                    src={image}
+                    alt={`${selectedActivityData.title} ${index + 1}`}
+                    className="w-full h-64 object-cover rounded-lg shadow-lg"
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Events and Celebrations */}
       <section className="py-20 bg-[#00393C] text-white">

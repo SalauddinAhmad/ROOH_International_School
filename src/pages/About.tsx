@@ -172,7 +172,7 @@ const About = () => {
       </section>
 
       {/* History Timeline */}
-      <section className="py-20 bg-[#00393C] text-white">
+      <section className="py-20 bg-[#00393C] text-white mb-8">
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold mb-4">Our Journey</h2>

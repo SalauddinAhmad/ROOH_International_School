@@ -298,20 +298,30 @@ const Contact = () => {
 
             {/* Map and Additional Info */}
             <div className="space-y-8">
-              {/* Map Placeholder */}
+              {/* Interactive Google Map */}
               <div className="bg-white rounded-2xl overflow-hidden shadow-lg">
-                <div className="h-64 bg-[#00393C] flex items-center justify-center text-white">
-                  <div className="text-center">
-                    <MapPin className="h-12 w-12 mx-auto mb-4 text-[#F68949]" />
-                    <h3 className="text-xl font-bold mb-2">Visit Our Campus</h3>
-                    <p className="text-[#FFE8D2]">House 35, Road 05, Sector 13, Uttara, Dhaka</p>
-                  </div>
-                </div>
+                <iframe
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3648.5441234567!2d90.3742!3d23.8759!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjPCsDUyJzMzLjIiTiA5MMKwMjInMjcuMSJF!5e0!3m2!1sen!2sbd!4v1234567890"
+                  width="100%"
+                  height="300"
+                  style={{ border: 0, filter: 'hue-rotate(20deg) saturate(0.8)' }}
+                  allowFullScreen
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  title="ROOH International School Location"
+                ></iframe>
                 <div className="p-6">
-                  <h3 className="text-lg font-bold text-[#00393C] mb-3">How to Reach Us</h3>
+                  <div className="flex items-center mb-4">
+                    <MapPin className="h-5 w-5 text-[#F68949] mr-2" />
+                    <h3 className="text-lg font-bold text-[#00393C]">Visit Our Campus</h3>
+                  </div>
+                  <p className="text-[#303E3F] mb-4 font-medium">
+                    House 35, Road 05, Sector 13, Uttara, Dhaka
+                  </p>
+                  <h4 className="text-md font-semibold text-[#00393C] mb-3">How to Reach Us:</h4>
                   <ul className="space-y-2 text-[#303E3F] text-sm">
-                    <li>• 5 minutes walk from Dhanmondi Metro Station</li>
-                    <li>• Bus routes: 1, 15, 25 stop nearby</li>
+                    <li>• 5 minutes walk from Uttara Metro Station</li>
+                    <li>• Bus routes: 15, 25, 35 stop nearby</li>
                     <li>• Ample parking available on campus</li>
                     <li>• Main entrance on Education Street</li>
                   </ul>

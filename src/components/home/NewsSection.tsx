@@ -1,5 +1,6 @@
 import React from 'react';
 import { Calendar, ArrowRight, Clock } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const NewsSection = () => {
   const newsItems = [
@@ -99,7 +100,10 @@ const NewsSection = () => {
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </button>
               </div>
-            </div>
+                  <Link 
+                    to={`/article/${featuredNews.id}`}
+                    className="flex items-center text-[#F68949] font-medium hover:text-[#946F5C] transition-colors"
+                  >
           </div>
 
           {/* Side Articles */}
@@ -120,9 +124,12 @@ const NewsSection = () => {
                       <span className="bg-[#00393C] text-white px-2 py-1 rounded text-xs">
                         {item.category}
                       </span>
-                      <span className="text-[#303E3F] text-xs">
+                      <Link 
+                        to={`/article/${item.id}`}
+                        className="text-[#F68949] hover:text-[#946F5C] transition-colors text-sm font-medium"
+                      >
                         {formatDate(item.date)}
-                      </span>
+                      </Link>
                     </div>
                     <h4 className="text-lg font-bold text-[#00393C] mb-2 leading-tight">
                       {item.title}
@@ -130,7 +137,7 @@ const NewsSection = () => {
                     <p className="text-[#303E3F] text-sm line-clamp-2">
                       {item.excerpt}
                     </p>
-                  </div>
+                  </Link>
                 </div>
               </div>
             ))}
@@ -139,25 +146,28 @@ const NewsSection = () => {
 
         {/* View All News Button */}
         <div className="text-center">
-          <button className="bg-[#00393C] text-white px-8 py-3 rounded-full font-medium hover:bg-[#303E3F] transition-colors duration-300 flex items-center mx-auto">
+          <Link 
+            to="/news"
+            className="bg-[#00393C] text-white px-8 py-3 rounded-full font-medium hover:bg-[#303E3F] transition-colors duration-300 flex items-center mx-auto"
+          >
             View All News & Events
             <ArrowRight className="ml-2 h-5 w-5" />
-          </button>
+          </Link>
         </div>
 
         {/* Quick Announcements */}
-        <div className="mt-16 bg-[#F68949] rounded-2xl p-8 text-white">
+        <div className="mt-16 bg-[#F68949] rounded-2xl p-8 text-white animate-fade-in">
           <h3 className="text-2xl font-bold mb-6 text-center">Important Announcements</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4">
+            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 hover:bg-white/20 transition-all duration-300 cursor-pointer transform hover:scale-105">
               <h4 className="font-semibold mb-2">Admission Open</h4>
               <p className="text-sm opacity-90">Applications for 2024-25 academic year are now open.</p>
             </div>
-            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4">
+            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 hover:bg-white/20 transition-all duration-300 cursor-pointer transform hover:scale-105">
               <h4 className="font-semibold mb-2">Winter Break</h4>
               <p className="text-sm opacity-90">School will remain closed from Dec 20 to Jan 5.</p>
             </div>
-            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4">
+            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 hover:bg-white/20 transition-all duration-300 cursor-pointer transform hover:scale-105">
               <h4 className="font-semibold mb-2">Health Checkup</h4>
               <p className="text-sm opacity-90">Annual health checkup scheduled for all students.</p>
             </div>
