@@ -2,6 +2,76 @@ import React, { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Calendar, Clock, Eye, ArrowLeft, User, MessageCircle, Send } from 'lucide-react';
 
+// Article data - in a real app, this would come from an API or database
+const articlesData = [
+  {
+    id: 1,
+    title: "New Science Laboratory Inaugurated with State-of-the-Art Equipment",
+    content: "The new science laboratory at ROOH International School represents a significant milestone in our commitment to providing world-class education. Equipped with the latest scientific instruments, interactive displays, and safety equipment, this facility will enable our students to conduct hands-on experiments and develop a deeper understanding of scientific concepts.\n\nThe laboratory includes dedicated spaces for biology, chemistry, and physics experiments, with each station designed to accommodate small groups for collaborative learning. Advanced microscopes, digital measuring instruments, and interactive whiteboards create an environment where theoretical knowledge meets practical application.\n\nOur science teachers have undergone specialized training to maximize the potential of these new resources, ensuring that students receive the best possible guidance in their scientific journey. The laboratory also features safety protocols and equipment that meet international standards, providing a secure learning environment for all students.\n\nThis investment in our facilities demonstrates our ongoing commitment to excellence in education and our belief in the importance of hands-on learning in developing critical thinking and problem-solving skills.\n\nThe inauguration ceremony was attended by parents, students, and distinguished guests from the educational community. Students were excited to explore the new equipment and immediately began planning their first experiments.\n\nWe believe this new facility will inspire a new generation of young scientists and researchers, contributing to Bangladesh's future in science and technology.",
+    image: "https://images.pexels.com/photos/8613067/pexels-photo-8613067.jpeg",
+    date: "2024-01-15",
+    category: "Facilities",
+    readTime: "4 min read",
+    author: "Dr. Aminul Islam",
+    views: 245
+  },
+  {
+    id: 2,
+    title: "Annual Sports Day 2024 - Celebrating Athletic Excellence",
+    content: "The Annual Sports Day 2024 was a spectacular display of athletic prowess, teamwork, and school spirit. Students from Playgroup to Grade 5 participated in various events including track and field, relay races, football, and traditional games.\n\nThe event emphasized participation over competition, with every student receiving recognition for their efforts. Parents and teachers cheered enthusiastically as young athletes demonstrated not only their physical abilities but also values of fair play and mutual respect.\n\nHighlights of the day included the 100-meter dash finals, the exciting relay races, and the creative march-past presentations by each class. The event concluded with an awards ceremony where medals and certificates were distributed to all participants.\n\nThis annual tradition continues to be one of our most anticipated events, fostering a love for sports and physical fitness among our students while building confidence and team spirit.\n\nThe sports day also featured special performances by our school band and dance troupe, adding to the festive atmosphere. Parents were invited to participate in special events, creating a true community celebration.\n\nWe are proud of all our students who participated with such enthusiasm and sportsmanship, embodying the values we strive to instill at ROOH International School.",
+    image: "https://images.pexels.com/photos/8613059/pexels-photo-8613059.jpeg",
+    date: "2024-01-12",
+    category: "Events",
+    readTime: "3 min read",
+    author: "Ms. Sarah Johnson",
+    views: 189
+  },
+  {
+    id: 3,
+    title: "Parent-Teacher Meeting Schedule for February 2024",
+    content: "The Parent-Teacher Meetings for February 2024 provide an excellent opportunity for parents to engage directly with teachers and understand their child's academic progress, social development, and areas for improvement.\n\nIndividual consultation slots are available for detailed discussions about each student's learning journey. These meetings are crucial for maintaining strong home-school partnerships that support student success.\n\nDuring these sessions, teachers will share insights about your child's strengths, areas for growth, and strategies for continued improvement. Parents are encouraged to discuss any concerns and collaborate on plans to support their child's development.\n\nScheduling information and time slots will be shared via our parent portal and school communication channels. We encourage all parents to take advantage of this valuable opportunity to connect with their child's teachers.\n\nThe meetings will be held in individual classrooms, allowing parents to see their child's learning environment firsthand. Teachers will have student portfolios and assessment records available for review.\n\nWe look forward to productive conversations that will benefit our students' continued growth and success.",
+    image: "https://images.pexels.com/photos/8612986/pexels-photo-8612986.jpeg",
+    date: "2024-01-10",
+    category: "Notices",
+    readTime: "2 min read",
+    author: "Administrative Office",
+    views: 156
+  },
+  {
+    id: 4,
+    title: "Student Art Exhibition Showcases Creative Talents",
+    content: "The Student Art Exhibition features an impressive collection of paintings, drawings, sculptures, and mixed-media artwork created by our talented Grade 4 students.\n\nThe exhibition showcases the diverse artistic abilities and creative thinking fostered through our comprehensive arts curriculum. Visitors can explore themes ranging from nature and family to abstract expressions of emotion and dreams.\n\nEach piece reflects the unique perspective and developing skills of our young artists, demonstrating the importance of creative expression in holistic education. The exhibition will remain open for viewing throughout the month, with guided tours available for interested families.\n\nThis celebration of creativity highlights our commitment to nurturing all aspects of student development, recognizing that artistic expression plays a vital role in building confidence and communication skills.\n\nThe exhibition includes works in various mediums including watercolors, acrylics, clay sculptures, and digital art. Students worked on these pieces throughout the semester, learning different techniques and exploring their creative voices.\n\nWe invite all families and community members to visit and celebrate the artistic achievements of our students.",
+    image: "https://images.pexels.com/photos/8612990/pexels-photo-8612990.jpeg",
+    date: "2024-01-08",
+    category: "Arts",
+    readTime: "3 min read",
+    author: "Ms. Emily Davis",
+    views: 134
+  },
+  {
+    id: 5,
+    title: "Digital Learning Initiative Launches New Online Platform",
+    content: "Our new digital learning platform integrates seamlessly with classroom instruction to provide students with interactive educational content, virtual field trips, and collaborative projects.\n\nTeachers can now assign multimedia homework, track student progress in real-time, and provide personalized feedback. Parents also have access to monitor their child's learning journey through dedicated dashboards.\n\nThe platform includes educational games, interactive simulations, and digital resources that make learning more engaging and effective. Students can access materials from home, enabling continuous learning beyond school hours.\n\nThis initiative represents our commitment to preparing students for a digital future while maintaining the personal touch that defines quality education.\n\nThe platform features age-appropriate content for all grade levels, from interactive storytelling for younger students to coding challenges for older ones. Teachers have received comprehensive training to maximize the platform's potential.\n\nWe believe this digital enhancement will complement our traditional teaching methods and provide students with 21st-century skills essential for their future success.",
+    image: "https://images.pexels.com/photos/8613074/pexels-photo-8613074.jpeg",
+    date: "2024-01-05",
+    category: "Technology",
+    readTime: "4 min read",
+    author: "IT Department",
+    views: 198
+  },
+  {
+    id: 6,
+    title: "Community Service Project: Helping Local Elderly Care Center",
+    content: "Our community service project brought together students, teachers, and families to support the local elderly care center through donations, entertainment programs, and companionship visits.\n\nThis initiative teaches students the importance of social responsibility and caring for community members while developing empathy and leadership skills. Students prepared songs, dances, and art projects to share with the elderly residents.\n\nThe project also included collecting essential items and organizing fundraising activities. Through these experiences, our students learn that education extends beyond academic achievement to include service to others.\n\nSuch initiatives are integral to our mission of developing well-rounded individuals who contribute positively to society.\n\nThe elderly residents were delighted by the students' visits and performances. Many meaningful connections were formed, with students learning valuable life lessons from the seniors' stories and experiences.\n\nWe plan to continue this partnership throughout the year, making community service a regular part of our students' educational experience.",
+    image: "https://images.pexels.com/photos/8613069/pexels-photo-8613069.jpeg",
+    date: "2024-01-03",
+    category: "Community",
+    readTime: "3 min read",
+    author: "Student Council",
+    views: 167
+  }
+];
+
 const ArticleView = () => {
   const { id } = useParams();
   const [comment, setComment] = useState('');
@@ -20,22 +90,26 @@ const ArticleView = () => {
     }
   ]);
 
-  // Mock article data - in a real app, this would come from an API
-  const articles = [
-    {
-      id: 1,
-      title: "New Science Laboratory Inaugurated with State-of-the-Art Equipment",
-      content: "The new science laboratory at ROOH International School represents a significant milestone in our commitment to providing world-class education. Equipped with the latest scientific instruments, interactive displays, and safety equipment, this facility will enable our students to conduct hands-on experiments and develop a deeper understanding of scientific concepts.\n\nThe laboratory includes dedicated spaces for biology, chemistry, and physics experiments, with each station designed to accommodate small groups for collaborative learning. Advanced microscopes, digital measuring instruments, and interactive whiteboards create an environment where theoretical knowledge meets practical application.\n\nOur science teachers have undergone specialized training to maximize the potential of these new resources, ensuring that students receive the best possible guidance in their scientific journey. The laboratory also features safety protocols and equipment that meet international standards, providing a secure learning environment for all students.\n\nThis investment in our facilities demonstrates our ongoing commitment to excellence in education and our belief in the importance of hands-on learning in developing critical thinking and problem-solving skills.\n\nThe inauguration ceremony was attended by parents, students, and distinguished guests from the educational community. Students were excited to explore the new equipment and immediately began planning their first experiments.\n\nWe believe this new facility will inspire a new generation of young scientists and researchers, contributing to Bangladesh's future in science and technology.",
-      image: "https://images.pexels.com/photos/8613067/pexels-photo-8613067.jpeg",
-      date: "2024-01-15",
-      category: "Facilities",
-      readTime: "4 min read",
-      author: "Dr. Aminul Islam",
-      views: 245
-    }
-  ];
-
-  const article = articles.find(a => a.id === parseInt(id || '1')) || articles[0];
+  // Find the specific article based on the URL parameter
+  const article = articlesData.find(a => a.id === parseInt(id || '1'));
+  
+  // If article not found, show error or redirect
+  if (!article) {
+    return (
+      <div className="pt-20 bg-white min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-3xl font-bold text-[#00393C] mb-4">Article Not Found</h1>
+          <p className="text-[#303E3F] mb-6">The article you're looking for doesn't exist.</p>
+          <Link 
+            to="/news"
+            className="bg-[#F68949] text-white px-6 py-3 rounded-lg font-medium hover:bg-[#946F5C] transition-colors"
+          >
+            Back to News & Blog
+          </Link>
+        </div>
+      </div>
+    );
+  }
 
   const handleCommentSubmit = (e: React.FormEvent) => {
     e.preventDefault();
