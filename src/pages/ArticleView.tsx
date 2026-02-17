@@ -135,7 +135,7 @@ const ArticleView = () => {
   };
 
   return (
-    <div className="pt-16 bg-white">
+    <div className="pt-[88px] bg-white">
       {/* Back Navigation */}
       <div className="bg-[#FFE8D2] py-4">
         <div className="max-w-4xl mx-auto px-4">

@@ -11,7 +11,7 @@ import VideoShowcaseSection from '../components/home/VideoShowcaseSection';
 
 const Home = () => {
   return (
-    <div className="pt-16">
+    <div className="pt-[88px]">
       <HeroSection />
       <WhyChooseSection />
       <ProgramsSection />

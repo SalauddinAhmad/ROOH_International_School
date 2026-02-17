@@ -16,9 +16,9 @@ const Header = () => {
   ];
 
   return (
-    <>
+    <div className="fixed top-0 left-0 right-0 z-50">
       {/* Top Bar */}
-      <div className="bg-[#00393C] text-white py-2 text-sm">
+      <div className="bg-[#00393C] text-white py-1 text-sm">
         <div className="max-w-7xl mx-auto px-4 flex justify-between items-center">
           <div className="flex items-center space-x-4">
             <span className="flex items-center">
@@ -34,22 +34,22 @@ const Header = () => {
       </div>
 
       {/* Main Header */}
-      <header className="bg-white shadow-lg fixed top-0 left-0 right-0 z-50">
+      <header className="bg-white shadow-lg">
         <div className="max-w-7xl mx-auto px-4">
-          <div className="flex justify-between items-center py-3">
+          <div className="flex justify-between items-center py-2">
             {/* Logo */}
             <Link to="/" className="flex items-center space-x-3">
               <div className="bg-[#F68949] p-2 rounded-lg">
-                <GraduationCap className="h-7 w-7 text-white" />
+                <GraduationCap className="h-6 w-6 text-white" />
               </div>
               <div>
-                <h1 className="text-xl font-bold text-[#00393C]">ROOH</h1>
+                <h1 className="text-lg font-bold text-[#00393C]">ROOH</h1>
                 <p className="text-xs text-[#303E3F]">International School</p>
               </div>
             </Link>
 
             {/* Desktop Navigation */}
-            <nav className="hidden md:flex space-x-8">
+            <nav className="hidden md:flex space-x-6">
               {navItems.map((item) => (
                 <Link
                   key={item.name}
@@ -67,7 +67,7 @@ const Header = () => {
 
             {/* Admission Button */}
             <div className="hidden md:block">
-              <button className="bg-[#F68949] text-white px-5 py-2 rounded-full font-medium text-sm hover:bg-[#946F5C] transition-colors duration-200">
+              <button className="bg-[#F68949] text-white px-4 py-1.5 rounded-full font-medium text-sm hover:bg-[#946F5C] transition-colors duration-200">
                 Apply Now
               </button>
             </div>
@@ -87,12 +87,12 @@ const Header = () => {
 
           {/* Mobile Navigation */}
           {isOpen && (
-            <nav className="md:hidden pb-4">
+            <nav className="md:hidden pb-3">
               {navItems.map((item) => (
                 <Link
                   key={item.name}
                   to={item.path}
-                  className={`block py-2 px-4 font-medium transition-colors duration-200 hover:text-[#F68949] ${
+                  className={`block py-1.5 px-4 font-medium transition-colors duration-200 hover:text-[#F68949] ${
                     location.pathname === item.path
                       ? 'text-[#F68949]'
                       : 'text-[#303E3F]'
@@ -102,8 +102,8 @@ const Header = () => {
                   {item.name}
                 </Link>
               ))}
-              <div className="px-4 pt-2">
-                <button className="w-full bg-[#F68949] text-white px-6 py-2 rounded-full font-medium hover:bg-[#946F5C] transition-colors duration-200">
+              <div className="px-4 pt-1">
+                <button className="w-full bg-[#F68949] text-white px-4 py-1.5 rounded-full font-medium hover:bg-[#946F5C] transition-colors duration-200">
                   Apply Now
                 </button>
               </div>
@@ -111,7 +111,7 @@ const Header = () => {
           )}
         </div>
       </header>
-    </>
+    </div>
   );
 };
 
