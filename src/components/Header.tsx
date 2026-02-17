@@ -34,17 +34,17 @@ const Header = () => {
       </div>
 
       {/* Main Header */}
-      <header className="bg-white shadow-lg sticky top-0 z-50">
+      <header className="bg-white shadow-lg fixed top-0 left-0 right-0 z-50">
         <div className="max-w-7xl mx-auto px-4">
-          <div className="flex justify-between items-center py-4">
+          <div className="flex justify-between items-center py-3">
             {/* Logo */}
             <Link to="/" className="flex items-center space-x-3">
               <div className="bg-[#F68949] p-2 rounded-lg">
-                <GraduationCap className="h-8 w-8 text-white" />
+                <GraduationCap className="h-7 w-7 text-white" />
               </div>
               <div>
-                <h1 className="text-2xl font-bold text-[#00393C]">ROOH</h1>
-                <p className="text-sm text-[#303E3F]">International School</p>
+                <h1 className="text-xl font-bold text-[#00393C]">ROOH</h1>
+                <p className="text-xs text-[#303E3F]">International School</p>
               </div>
             </Link>
 
@@ -54,7 +54,7 @@ const Header = () => {
                 <Link
                   key={item.name}
                   to={item.path}
-                  className={`font-medium transition-colors duration-200 hover:text-[#F68949] ${
+                  className={`font-medium text-sm transition-colors duration-200 hover:text-[#F68949] ${
                     location.pathname === item.path
                       ? 'text-[#F68949]'
                       : 'text-[#303E3F]'
@@ -67,7 +67,7 @@ const Header = () => {
 
             {/* Admission Button */}
             <div className="hidden md:block">
-              <button className="bg-[#F68949] text-white px-6 py-2 rounded-full font-medium hover:bg-[#946F5C] transition-colors duration-200">
+              <button className="bg-[#F68949] text-white px-5 py-2 rounded-full font-medium text-sm hover:bg-[#946F5C] transition-colors duration-200">
                 Apply Now
               </button>
             </div>

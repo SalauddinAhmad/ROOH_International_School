@@ -3,7 +3,7 @@ import { ArrowRight, Users, BookOpen, Award } from 'lucide-react';
 
 const HeroSection = () => {
   return (
-    <section className="relative bg-gradient-to-br from-[#FFE8D2] to-[#F68949] min-h-screen flex items-center">
+    <section className="relative bg-gradient-to-br from-[#FFE8D2] to-[#F68949] min-h-screen flex items-center -mt-16 pt-16">
       <div className="max-w-7xl mx-auto px-4 py-20">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           {/* Left Content */}

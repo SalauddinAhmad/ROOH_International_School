@@ -104,7 +104,7 @@ const NewsBlog = () => {
   };
 
   return (
-    <div className="pt-20">
+    <div className="pt-16">
       {/* Hero Section */}
       <section className="bg-gradient-to-br from-[#FFE8D2] to-[#F68949] py-16">
         <div className="max-w-7xl mx-auto px-4">
