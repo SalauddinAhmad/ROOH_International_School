@@ -1,103 +1,307 @@
 import React, { useState, useEffect } from 'react';
-import { Settings, Users, FileText, Image, Calendar, Phone, Mail, MapPin, Save, CreditCard as Edit, Plus, Trash2, Eye, EyeOff, Upload, Download, Shield, User, AlertTriangle, CheckCircle } from 'lucide-react';
-import { useAdmin } from '../contexts/AdminContext';
-
-type UserRole = 'superadmin' | 'admin';
+import { 
+  Settings, 
+  FileText, 
+  Image, 
+  User, 
+  Calendar, 
+  MessageSquare, 
+  Camera, 
+  Phone,
+  Users,
+  Plus,
+  Edit,
+  Trash2,
+  Save,
+  LogOut,
+  Shield,
+  Star,
+  Eye,
+  EyeOff
+} from 'lucide-react';
 
 interface User {
   id: string;
   username: string;
   password: string;
-  role: UserRole;
-  name: string;
-  LogOut,
-  Users,
-  Plus,
-  Edit,
-  Trash2
+  fullName: string;
+  email: string;
+  role: 'admin' | 'superadmin';
   createdAt: string;
   lastLogin?: string;
 }
 
-const getDefaultUsers = (): User[] => [
-  {
-    id: '1',
-    username: 'superadmin',
-    password: 'rooh2024super',
-    role: 'superadmin',
-    name: 'Super Administrator',
-    email: 'superadmin@roohschool.edu.bd',
-    createdAt: '2024-01-01'
-  },
-  {
-    id: '2',
-    username: 'admin',
-    password: 'rooh2024',
-    role: 'admin',
-    name: 'Administrator',
-    email: 'admin@roohschool.edu.bd',
-    createdAt: '2024-01-01'
-  }
-];
+interface AdminData {
+  siteInfo: {
+    schoolName: string;
+    tagline: string;
+    phone: string;
+    email: string;
+    address: string;
+    establishedYear: string;
+  };
+  heroSection: {
+    title: string;
+    subtitle: string;
+    description: string;
+    stats: {
+      students: string;
+      teachers: string;
+      years: string;
+    };
+  };
+  aboutSection: {
+    vision: string;
+    mission: string;
+    coreValues: string;
+    principalMessage: string;
+    principalName: string;
+    principalTitle: string;
+    schoolStats: {
+      yearsOfExcellence: string;
+      happyStudents: string;
+      qualifiedTeachers: string;
+      gradeLevels: string;
+    };
+  };
+  programs: Array<{
+    id: string;
+    title: string;
+    age: string;
+    description: string;
+    subjects: string[];
+  }>;
+  news: Array<{
+    id: string;
+    title: string;
+    excerpt: string;
+    content: string;
+    category: string;
+    author: string;
+    date: string;
+    featured: boolean;
+  }>;
+  testimonials: Array<{
+    id: string;
+    name: string;
+    role: string;
+    content: string;
+    rating: number;
+    studentName: string;
+  }>;
+  gallery: Array<{
+    id: string;
+    title: string;
+    category: string;
+    imageUrl: string;
+  }>;
+  contactInfo: {
+    phone: string;
+    email: string;
+    address: string;
+    officeHours: string;
+    emergencyContact: string;
+  };
+}
 
 const Admin = () => {
-  const [activeTab, setActiveTab] = useState('dashboard');
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [currentUser, setCurrentUser] = useState<User | null>(null);
-  const [loginData, setLoginData] = useState({ username: '', password: '' });
+  const [loginForm, setLoginForm] = useState({ username: '', password: '' });
+  const [activeSection, setActiveSection] = useState('dashboard');
+  const [users, setUsers] = useState<User[]>([]);
   const [showPassword, setShowPassword] = useState(false);
-  const [editingItem, setEditingItem] = useState<any>(null);
-  const [notification, setNotification] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
-  const [users, setUsers] = useState<User[]>(getDefaultUsers());
   const [editingUser, setEditingUser] = useState<User | null>(null);
-  const [newUser, setNewUser] = useState<Partial<User>>({
+  const [newUser, setNewUser] = useState({
     username: '',
     password: '',
-    name: '',
+    fullName: '',
     email: '',
-    role: 'admin'
+    role: 'admin' as 'admin' | 'superadmin'
   });
-  const [showUserPassword, setShowUserPassword] = useState(false);
 
-  const {
-    adminData,
-    updateSiteInfo,
-    updateHeroSection,
-    updateAboutSection,
-    addNewsItem,
-    updateNewsItem,
-    deleteNewsItem,
-    saveData,
-    exportData
-  } = useAdmin();
+  const [adminData, setAdminData] = useState<AdminData>({
+    siteInfo: {
+      schoolName: 'ROOH International School',
+      tagline: 'Nurturing Tomorrow\'s Leaders Today',
+      phone: '+880 1896-061644',
+      email: 'info@roohschool.edu.bd',
+      address: 'House 35, Road 05, Sector 13, Uttara, Dhaka-1230',
+      establishedYear: '2014'
+    },
+    heroSection: {
+      title: 'Nurturing Tomorrow\'s Leaders Today',
+      subtitle: 'Excellence in Education',
+      description: 'At ROOH International School, we provide world-class education that nurtures young minds with excellence in education, character development, and holistic growth for a brighter future.',
+      stats: {
+        students: '650+',
+        teachers: '35+',
+        years: '11+'
+      }
+    },
+    aboutSection: {
+      vision: 'To be a leading educational institution that empowers students to become confident, creative, and compassionate global citizens who contribute positively to society.',
+      mission: 'To provide excellent education in a nurturing environment that fosters intellectual curiosity, moral integrity, and social responsibility while celebrating diversity and individual potential.',
+      coreValues: 'Excellence, Integrity, Respect, Innovation, and Community. These values guide everything we do and help shape the character of our students and school community.',
+      principalMessage: 'Welcome to ROOH International School, where every child\'s journey of discovery begins. As an educator with over 15 years of experience, I believe that education is not just about academic achievement, but about nurturing the whole child.',
+      principalName: 'Sadiqun Nahar',
+      principalTitle: 'Vice Principal, ROOH International School',
+      schoolStats: {
+        yearsOfExcellence: '6+',
+        happyStudents: '150+',
+        qualifiedTeachers: '25+',
+        gradeLevels: '5'
+      }
+    },
+    programs: [
+      {
+        id: '1',
+        title: 'Playgroup',
+        age: '2-3 Years',
+        description: 'Introduction to learning through play-based activities, social interaction and basic skill development.',
+        subjects: ['Play Activities', 'Basic Communication', 'Motor Skills', 'Social Skills']
+      },
+      {
+        id: '2',
+        title: 'Nursery',
+        age: '3-4 Years',
+        description: 'Building foundation skills through structured learning, creative play and early academic concepts.',
+        subjects: ['Pre-Reading Skills', 'Number Recognition', 'Creative Arts', 'Physical Development']
+      }
+    ],
+    news: [
+      {
+        id: '1',
+        title: 'New Science Laboratory Inaugurated',
+        excerpt: 'State-of-the-art science laboratory with modern equipment now open for students.',
+        content: 'The new science laboratory at ROOH International School represents a significant milestone...',
+        category: 'Facilities',
+        author: 'Dr. Aminul Islam',
+        date: '2024-01-15',
+        featured: true
+      }
+    ],
+    testimonials: [
+      {
+        id: '1',
+        name: 'Sarah Ahmed',
+        role: 'Parent of Grade 3 Student',
+        content: 'ROOH International School has exceeded our expectations. The caring environment and quality education have helped our daughter flourish.',
+        rating: 5,
+        studentName: 'Ayesha Ahmed'
+      },
+      {
+        id: '2',
+        name: 'Dr. Mohammad Rahman',
+        role: 'Parent of KG-2 Student',
+        content: 'What impressed us most is the school\'s focus on character development alongside academics. Our son has become more confident and curious about learning.',
+        rating: 5,
+        studentName: 'Omar Rahman'
+      }
+    ],
+    gallery: [
+      {
+        id: '1',
+        title: 'Happy Students in Classroom',
+        category: 'Academics',
+        imageUrl: 'https://images.pexels.com/photos/8613069/pexels-photo-8613069.jpeg'
+      },
+      {
+        id: '2',
+        title: 'Science Laboratory',
+        category: 'Facilities',
+        imageUrl: 'https://images.pexels.com/photos/8613067/pexels-photo-8613067.jpeg'
+      },
+      {
+        id: '3',
+        title: 'Art & Craft Activities',
+        category: 'Arts',
+        imageUrl: 'https://images.pexels.com/photos/8612990/pexels-photo-8612990.jpeg'
+      }
+    ],
+    contactInfo: {
+      phone: '+880 1896-061644',
+      email: 'info@roohschool.edu.bd',
+      address: 'House 35, Road 05, Sector 13, Uttara, Dhaka-1230',
+      officeHours: 'Sunday - Thursday: 8:00 AM - 4:00 PM',
+      emergencyContact: '+880 1896-061646'
+    }
+  });
 
-  // Check permissions
-  const canEdit = (section: string) => {
-    if (!currentUser) return false;
-    if (currentUser.role === 'superadmin') return true;
-    
-    // Normal admin restrictions
-    const restrictedSections = ['siteinfo', 'hero', 'about'];
-    return !restrictedSections.includes(section);
-  };
+  // Initialize default users and load data
+  useEffect(() => {
+    const savedAuth = localStorage.getItem('adminAuth');
+    const savedUsers = localStorage.getItem('adminUsers');
+    const savedData = localStorage.getItem('roohAdminData');
 
-  // Authentication
+    // Initialize default users if none exist
+    if (!savedUsers) {
+      const defaultUsers: User[] = [
+        {
+          id: '1',
+          username: 'superadmin',
+          password: 'super123',
+          fullName: 'Super Administrator',
+          email: 'superadmin@roohschool.edu.bd',
+          role: 'superadmin',
+          createdAt: new Date().toISOString(),
+          lastLogin: new Date().toISOString()
+        },
+        {
+          id: '2',
+          username: 'admin',
+          password: 'admin123',
+          fullName: 'Administrator',
+          email: 'admin@roohschool.edu.bd',
+          role: 'admin',
+          createdAt: new Date().toISOString(),
+          lastLogin: new Date().toISOString()
+        }
+      ];
+      setUsers(defaultUsers);
+      localStorage.setItem('adminUsers', JSON.stringify(defaultUsers));
+    } else {
+      setUsers(JSON.parse(savedUsers));
+    }
+
+    if (savedAuth) {
+      const authData = JSON.parse(savedAuth);
+      setIsAuthenticated(true);
+      setCurrentUser(authData.user);
+    }
+
+    if (savedData) {
+      try {
+        setAdminData(JSON.parse(savedData));
+      } catch (error) {
+        console.error('Error loading admin data:', error);
+      }
+    }
+  }, []);
+
+  // Auto-save data
+  useEffect(() => {
+    localStorage.setItem('roohAdminData', JSON.stringify(adminData));
+  }, [adminData]);
+
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    const user = users.find(u => 
-      u.username === loginData.username && u.password === loginData.password
-    );
+    const user = users.find(u => u.username === loginForm.username && u.password === loginForm.password);
     
     if (user) {
-      const updatedUser = { ...user, lastLogin: new Date().toISOString() };
-      setUsers(prev => prev.map(u => u.id === user.id ? updatedUser : u));
+      // Update last login
+      const updatedUsers = users.map(u => 
+        u.id === user.id ? { ...u, lastLogin: new Date().toISOString() } : u
+      );
+      setUsers(updatedUsers);
+      localStorage.setItem('adminUsers', JSON.stringify(updatedUsers));
+      
       setIsAuthenticated(true);
-      setCurrentUser(updatedUser);
-      localStorage.setItem('adminAuth', JSON.stringify(updatedUser));
-      localStorage.setItem('adminUsers', JSON.stringify(users));
-      showNotification('success', `Welcome ${updatedUser.name}!`);
+      setCurrentUser(user);
+      localStorage.setItem('adminAuth', JSON.stringify({ user, timestamp: Date.now() }));
+      setLoginForm({ username: '', password: '' });
     } else {
-      showNotification('error', 'Invalid credentials!');
+      alert('Invalid credentials!');
     }
   };
 
@@ -105,120 +309,174 @@ const Admin = () => {
     setIsAuthenticated(false);
     setCurrentUser(null);
     localStorage.removeItem('adminAuth');
-    setActiveTab('dashboard');
-    showNotification('success', 'Logged out successfully');
+    setActiveSection('dashboard');
+    alert('Logged out successfully!');
+  };
+
+  const updateAdminData = (section: keyof AdminData, field: string, value: any) => {
+    setAdminData(prev => ({
+      ...prev,
+      [section]: {
+        ...prev[section],
+        [field]: value
+      }
+    }));
+  };
+
+  const updateNestedData = (section: keyof AdminData, parent: string, field: string, value: any) => {
+    setAdminData(prev => ({
+      ...prev,
+      [section]: {
+        ...prev[section],
+        [parent]: {
+          ...(prev[section] as any)[parent],
+          [field]: value
+        }
+      }
+    }));
   };
 
   // User Management Functions
   const addUser = () => {
-    if (!newUser.username || !newUser.password || !newUser.name) {
-      showNotification('error', 'Please fill all required fields!');
+    if (!newUser.username || !newUser.password || !newUser.fullName) {
+      alert('Please fill in all required fields');
       return;
     }
 
-    if (users.find(u => u.username === newUser.username)) {
-      showNotification('error', 'Username already exists!');
+    if (users.some(u => u.username === newUser.username)) {
+      alert('Username already exists');
       return;
     }
 
     const user: User = {
       id: Date.now().toString(),
-      username: newUser.username!,
-      password: newUser.password!,
-      name: newUser.name!,
-      email: newUser.email || '',
-      role: newUser.role as UserRole,
+      ...newUser,
       createdAt: new Date().toISOString()
     };
 
-    setUsers(prev => [...prev, user]);
-    localStorage.setItem('adminUsers', JSON.stringify([...users, user]));
-    setNewUser({ username: '', password: '', name: '', email: '', role: 'admin' });
-    showNotification('success', 'User added successfully!');
+    const updatedUsers = [...users, user];
+    setUsers(updatedUsers);
+    localStorage.setItem('adminUsers', JSON.stringify(updatedUsers));
+    setNewUser({ username: '', password: '', fullName: '', email: '', role: 'admin' });
+    alert('User added successfully!');
   };
 
   const updateUser = (updatedUser: User) => {
-    setUsers(prev => prev.map(u => u.id === updatedUser.id ? updatedUser : u));
-    localStorage.setItem('adminUsers', JSON.stringify(users.map(u => u.id === updatedUser.id ? updatedUser : u)));
+    const updatedUsers = users.map(u => u.id === updatedUser.id ? updatedUser : u);
+    setUsers(updatedUsers);
+    localStorage.setItem('adminUsers', JSON.stringify(updatedUsers));
     setEditingUser(null);
-    showNotification('success', 'User updated successfully!');
+    alert('User updated successfully!');
   };
 
   const deleteUser = (userId: string) => {
-    if (userId === currentUser?.id) {
-      showNotification('error', 'Cannot delete your own account!');
+    const userToDelete = users.find(u => u.id === userId);
+    if (!userToDelete) return;
+
+    if (userToDelete.id === currentUser?.id) {
+      alert('You cannot delete your own account');
       return;
     }
-    
-    if (users.filter(u => u.role === 'superadmin').length === 1 && users.find(u => u.id === userId)?.role === 'superadmin') {
-      showNotification('error', 'Cannot delete the last super admin!');
+
+    const superAdmins = users.filter(u => u.role === 'superadmin');
+    if (userToDelete.role === 'superadmin' && superAdmins.length === 1) {
+      alert('Cannot delete the last super admin');
       return;
     }
 
-    setUsers(prev => prev.filter(u => u.id !== userId));
-    localStorage.setItem('adminUsers', JSON.stringify(users.filter(u => u.id !== userId)));
-    showNotification('success', 'User deleted successfully!');
+    if (confirm('Are you sure you want to delete this user?')) {
+      const updatedUsers = users.filter(u => u.id !== userId);
+      setUsers(updatedUsers);
+      localStorage.setItem('adminUsers', JSON.stringify(updatedUsers));
+      alert('User deleted successfully!');
+    }
   };
 
-  const showNotification = (type: 'success' | 'error', message: string) => {
-    setNotification({ type, message });
-    setTimeout(() => setNotification(null), 3000);
-  };
-
-  useEffect(() => {
-    const auth = localStorage.getItem('adminAuth');
-    const savedUsers = localStorage.getItem('adminUsers');
-    
-    if (savedUsers) {
-      try {
-        setUsers(JSON.parse(savedUsers));
-      } catch (error) {
-        setUsers(getDefaultUsers());
-      }
-    }
-    
-    if (auth) {
-      try {
-        const user = JSON.parse(auth);
-        setIsAuthenticated(true);
-        setCurrentUser(user);
-      } catch (error) {
-        localStorage.removeItem('adminAuth');
-      }
-    }
-  }, []);
-
-  // Listen for auto-save events
-  useEffect(() => {
-    const handleAutoSave = () => {
-      showNotification('success', 'Changes saved automatically!');
+  // Testimonial Functions
+  const addTestimonial = () => {
+    const newTestimonial = {
+      id: Date.now().toString(),
+      name: 'New Parent',
+      role: 'Parent',
+      content: 'Great school experience...',
+      rating: 5,
+      studentName: 'Student Name'
     };
+    setAdminData(prev => ({
+      ...prev,
+      testimonials: [...prev.testimonials, newTestimonial]
+    }));
+  };
 
-    window.addEventListener('adminDataSaved', handleAutoSave);
-    return () => window.removeEventListener('adminDataSaved', handleAutoSave);
-  }, []);
+  const updateTestimonial = (id: string, field: string, value: any) => {
+    setAdminData(prev => ({
+      ...prev,
+      testimonials: prev.testimonials.map(t => 
+        t.id === id ? { ...t, [field]: value } : t
+      )
+    }));
+  };
+
+  const deleteTestimonial = (id: string) => {
+    if (confirm('Are you sure you want to delete this testimonial?')) {
+      setAdminData(prev => ({
+        ...prev,
+        testimonials: prev.testimonials.filter(t => t.id !== id)
+      }));
+    }
+  };
+
+  // Gallery Functions
+  const addGalleryItem = () => {
+    const newItem = {
+      id: Date.now().toString(),
+      title: 'New Image',
+      category: 'Academics',
+      imageUrl: 'https://images.pexels.com/photos/8613069/pexels-photo-8613069.jpeg'
+    };
+    setAdminData(prev => ({
+      ...prev,
+      gallery: [...prev.gallery, newItem]
+    }));
+  };
+
+  const updateGalleryItem = (id: string, field: string, value: any) => {
+    setAdminData(prev => ({
+      ...prev,
+      gallery: prev.gallery.map(g => 
+        g.id === id ? { ...g, [field]: value } : g
+      )
+    }));
+  };
+
+  const deleteGalleryItem = (id: string) => {
+    if (confirm('Are you sure you want to delete this image?')) {
+      setAdminData(prev => ({
+        ...prev,
+        gallery: prev.gallery.filter(g => g.id !== id)
+      }));
+    }
+  };
 
   if (!isAuthenticated) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-[#00393C] to-[#303E3F] flex items-center justify-center">
-        <div className="bg-white rounded-2xl p-8 shadow-2xl w-full max-w-md">
+      <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+        <div className="bg-white p-8 rounded-2xl shadow-lg max-w-md w-full">
           <div className="text-center mb-8">
             <div className="bg-[#F68949] p-4 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
-              <Settings className="h-8 w-8 text-white" />
+              <Shield className="h-8 w-8 text-white" />
             </div>
-            <h1 className="text-2xl font-bold text-[#00393C] mb-2">Admin Panel</h1>
+            <h1 className="text-2xl font-bold text-[#00393C] mb-2">Admin Login</h1>
             <p className="text-[#303E3F]">ROOH International School</p>
           </div>
 
           <form onSubmit={handleLogin} className="space-y-6">
             <div>
-              <label className="block text-sm font-medium text-[#303E3F] mb-2">
-                Username
-              </label>
+              <label className="block text-sm font-medium text-[#303E3F] mb-2">Username</label>
               <input
                 type="text"
-                value={loginData.username}
-                onChange={(e) => setLoginData(prev => ({ ...prev, username: e.target.value }))}
+                value={loginForm.username}
+                onChange={(e) => setLoginForm({...loginForm, username: e.target.value})}
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F68949]"
                 placeholder="Enter username"
                 required
@@ -226,14 +484,12 @@ const Admin = () => {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-[#303E3F] mb-2">
-                Password
-              </label>
+              <label className="block text-sm font-medium text-[#303E3F] mb-2">Password</label>
               <div className="relative">
                 <input
-                  type={showPassword ? 'text' : 'password'}
-                  value={loginData.password}
-                  onChange={(e) => setLoginData(prev => ({ ...prev, password: e.target.value }))}
+                  type={showPassword ? "text" : "password"}
+                  value={loginForm.password}
+                  onChange={(e) => setLoginForm({...loginForm, password: e.target.value})}
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F68949]"
                   placeholder="Enter password"
                   required
@@ -252,854 +508,679 @@ const Admin = () => {
               type="submit"
               className="w-full bg-[#F68949] text-white py-3 rounded-lg font-medium hover:bg-[#946F5C] transition-colors"
             >
-              Login to Admin Panel
+              Login
             </button>
           </form>
 
-          <div className="mt-6 p-4 bg-[#FFE8D2] rounded-lg">
-            <p className="text-sm text-[#303E3F] mb-2">
-              <strong>Demo Credentials:</strong>
-            </p>
-            <div className="space-y-1 text-xs">
-              <p><strong>Super Admin:</strong> superadmin / rooh2024super</p>
-              <p><strong>Normal Admin:</strong> admin / rooh2024</p>
-            </div>
+          <div className="mt-6 p-4 bg-gray-50 rounded-lg">
+            <p className="text-sm text-[#303E3F] mb-2">Demo Credentials:</p>
+            <p className="text-xs text-[#303E3F]">Super Admin: superadmin / super123</p>
+            <p className="text-xs text-[#303E3F]">Admin: admin / admin123</p>
           </div>
         </div>
       </div>
     );
   }
 
+  const menuItems = [
+    { id: 'dashboard', name: 'Dashboard', icon: Settings },
+    { id: 'siteInfo', name: 'Site Information', icon: FileText },
+    { id: 'heroSection', name: 'Hero Section', icon: Image },
+    { id: 'aboutSection', name: 'About Section', icon: User },
+    { id: 'programs', name: 'Programs', icon: Calendar },
+    { id: 'news', name: 'News & Events', icon: MessageSquare },
+    { id: 'testimonials', name: 'Testimonials', icon: MessageSquare },
+    { id: 'gallery', name: 'Gallery', icon: Camera },
+    { id: 'contactInfo', name: 'Contact Info', icon: Phone },
+    ...(currentUser?.role === 'superadmin' ? [{ id: 'userManagement', name: 'User Management', icon: Users }] : [])
+  ];
+
   return (
-    <div className="min-h-screen bg-gray-100">
-      {/* Notification */}
-      {notification && (
-        <div className={`fixed top-4 right-4 z-50 p-4 rounded-lg shadow-lg flex items-center space-x-2 ${
-          notification.type === 'success' ? 'bg-green-500 text-white' : 'bg-red-500 text-white'
-        }`}>
-          {notification.type === 'success' ? 
-            <CheckCircle className="h-5 w-5" /> : 
-            <AlertTriangle className="h-5 w-5" />
-          }
-          <span>{notification.message}</span>
+    <div className="min-h-screen bg-gray-100 flex">
+      {/* Sidebar */}
+      <div className="w-64 bg-white shadow-lg">
+        <div className="p-6 border-b">
+          <h1 className="text-xl font-bold text-[#00393C]">Admin Panel</h1>
+          <p className="text-sm text-[#303E3F]">ROOH International School</p>
         </div>
-      )}
 
-      {/* Admin Header */}
-      <header className="bg-[#00393C] text-white shadow-lg">
-        <div className="max-w-7xl mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-3">
-              <Settings className="h-8 w-8 text-[#F68949]" />
-              <div>
-                <h1 className="text-xl font-bold">Admin Panel</h1>
-                <p className="text-sm text-[#FFE8D2]">ROOH International School</p>
-              </div>
-            </div>
-            <div className="flex items-center space-x-4">
-              <div className="flex items-center space-x-2 bg-white/10 px-3 py-2 rounded-lg">
-                {currentUser?.role === 'superadmin' ? 
-                  <Shield className="h-4 w-4 text-yellow-400" /> : 
-                  <User className="h-4 w-4 text-blue-400" />
-                }
-                <span className="text-sm">{currentUser?.name}</span>
-              </div>
+        <nav className="p-4">
+          {menuItems.map((item) => {
+            const Icon = item.icon;
+            return (
               <button
-                onClick={saveData}
-                className="bg-[#F68949] px-4 py-2 rounded-lg font-medium hover:bg-[#946F5C] transition-colors flex items-center"
+                key={item.id}
+                onClick={() => setActiveSection(item.id)}
+                className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg mb-2 transition-colors ${
+                  activeSection === item.id
+                    ? 'bg-[#F68949] text-white'
+                    : 'text-[#303E3F] hover:bg-gray-100'
+                }`}
               >
-                <Save className="h-4 w-4 mr-2" />
-                Save Changes
+                <Icon className="h-5 w-5" />
+                <span>{item.name}</span>
               </button>
-              <button
-                onClick={handleLogout}
-                className="bg-red-600 px-4 py-2 rounded-lg font-medium hover:bg-red-700 transition-colors"
-              >
-                Logout
-              </button>
+            );
+          })}
+        </nav>
+
+        {/* User Info & Logout */}
+        <div className="absolute bottom-0 left-0 right-0 w-64 p-4 border-t bg-white">
+          <div className="bg-gray-50 p-3 rounded-lg mb-3">
+            <div className="flex items-center space-x-2 mb-1">
+              {currentUser?.role === 'superadmin' ? (
+                <Shield className="h-4 w-4 text-yellow-600" />
+              ) : (
+                <User className="h-4 w-4 text-blue-600" />
+              )}
+              <span className="font-medium text-sm">{currentUser?.fullName}</span>
             </div>
+            <p className={`text-xs ${currentUser?.role === 'superadmin' ? 'text-yellow-600' : 'text-blue-600'}`}>
+              {currentUser?.role === 'superadmin' ? 'Super Admin' : 'Admin'}
+            </p>
           </div>
-        </div>
-      </header>
-
-      <div className="max-w-7xl mx-auto px-4 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-          {/* Sidebar */}
-          <div className="lg:col-span-1">
-            <div className="bg-white rounded-2xl shadow-lg p-6">
-              <nav className="space-y-2">
-                {[
-                  { id: 'dashboard', label: 'Dashboard', icon: Settings, restricted: false },
-                  { id: 'siteinfo', label: 'Site Information', icon: FileText, restricted: true },
-                  { id: 'hero', label: 'Hero Section', icon: Image, restricted: true },
-                  { id: 'about', label: 'About Section', icon: Users, restricted: true },
-                  { id: 'programs', label: 'Programs', icon: FileText, restricted: false },
-                  { id: 'news', label: 'News & Events', icon: Calendar, restricted: false },
-                  { id: 'testimonials', label: 'Testimonials', icon: Users, restricted: false },
-                  { id: 'gallery', label: 'Gallery', icon: Image, restricted: false },
-                  { id: 'contact', label: 'Contact Info', icon: Phone, restricted: false }
-                ].concat(currentUser?.role === 'superadmin' ? [
-                  { id: 'users', label: 'User Management', icon: Users, restricted: false }
-                ] : []).map((item) => {
-                  const isRestricted = item.restricted && !canEdit(item.id);
-                  return (
-                    <button
-                      key={item.id}
-                      onClick={() => !isRestricted && setActiveTab(item.id)}
-                      disabled={isRestricted}
-                      className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-left transition-colors ${
-                        activeTab === item.id
-                          ? 'bg-[#F68949] text-white'
-                          : isRestricted
-                          ? 'text-gray-400 cursor-not-allowed'
-                          : 'text-[#303E3F] hover:bg-[#FFE8D2]'
-                      }`}
-                    >
-                      <item.icon className="h-5 w-5" />
-                      <span>{item.label}</span>
-                      {isRestricted && <Shield className="h-4 w-4 ml-auto" />}
-                    </button>
-                  );
-                })}
-              </nav>
-              
-              {/* Logout Button in Sidebar */}
-              <div className="mt-8 pt-6 border-t border-gray-200">
-                <button
-                  onClick={handleLogout}
-                  className="w-full bg-red-600 text-white px-4 py-3 rounded-lg font-medium hover:bg-red-700 transition-colors flex items-center justify-center space-x-2"
-                >
-                  <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-                  </svg>
-                  <span>Logout</span>
-                </button>
-                
-                {/* Current User Info */}
-                <div className="mt-4 p-3 bg-gray-50 rounded-lg">
-                  <div className="flex items-center space-x-2">
-                    {currentUser?.role === 'superadmin' ? 
-                      <Shield className="h-4 w-4 text-yellow-500" /> : 
-                      <User className="h-4 w-4 text-blue-500" />
-                    }
-                    <div className="text-sm">
-                      <p className="font-medium text-gray-800">{currentUser?.name}</p>
-                      <p className="text-gray-600 text-xs">
-                        {currentUser?.role === 'superadmin' ? 'Super Admin' : 'Admin'}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Main Content */}
-          <div className="lg:col-span-3">
-            <div className="bg-white rounded-2xl shadow-lg p-8">
-              {/* Dashboard */}
-              {activeTab === 'dashboard' && (
-                <div>
-                  <h2 className="text-2xl font-bold text-[#00393C] mb-6">Dashboard</h2>
-                  
-                  {/* Role Info */}
-                  <div className="mb-8 p-4 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl border border-blue-200">
-                    <div className="flex items-center space-x-3">
-                      {currentUser?.role === 'superadmin' ? 
-                        <Shield className="h-6 w-6 text-yellow-500" /> : 
-                        <User className="h-6 w-6 text-blue-500" />
-                      }
-                      <div>
-                        <h3 className="font-semibold text-gray-800">
-                          {currentUser?.role === 'superadmin' ? 'Super Administrator' : 'Administrator'}
-                        </h3>
-                        <p className="text-sm text-gray-600">
-                          {currentUser?.role === 'superadmin' 
-                            ? 'Full access to all sections and settings'
-                            : 'Limited access - Cannot edit Site Info, Hero, or About sections'
-                          }
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                    <div className="bg-[#F68949] text-white p-6 rounded-xl">
-                      <Users className="h-8 w-8 mb-2" />
-                      <div className="text-2xl font-bold">{adminData.heroSection.stats.students}</div>
-                      <div className="text-sm opacity-90">Students</div>
-                    </div>
-                    <div className="bg-[#00393C] text-white p-6 rounded-xl">
-                      <Users className="h-8 w-8 mb-2" />
-                      <div className="text-2xl font-bold">{adminData.heroSection.stats.teachers}</div>
-                      <div className="text-sm opacity-90">Teachers</div>
-                    </div>
-                    <div className="bg-[#946F5C] text-white p-6 rounded-xl">
-                      <Calendar className="h-8 w-8 mb-2" />
-                      <div className="text-2xl font-bold">{adminData.heroSection.stats.years}</div>
-                      <div className="text-sm opacity-90">Years</div>
-                    </div>
-                    <div className="bg-green-600 text-white p-6 rounded-xl">
-                      <FileText className="h-8 w-8 mb-2" />
-                      <div className="text-2xl font-bold">{adminData.news.length}</div>
-                      <div className="text-sm opacity-90">News Articles</div>
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="bg-[#FFE8D2] p-6 rounded-xl">
-                      <h3 className="text-lg font-bold text-[#00393C] mb-4">Quick Actions</h3>
-                      <div className="space-y-3">
-                        <button
-                          onClick={() => setActiveTab('news')}
-                          className="w-full bg-[#F68949] text-white px-4 py-2 rounded-lg hover:bg-[#946F5C] transition-colors"
-                        >
-                          Add New Article
-                        </button>
-                        <button
-                          onClick={exportData}
-                          className="w-full bg-[#00393C] text-white px-4 py-2 rounded-lg hover:bg-[#303E3F] transition-colors flex items-center justify-center"
-                        >
-                          <Download className="h-4 w-4 mr-2" />
-                          Export Data
-                        </button>
-                      </div>
-                    </div>
-
-                    <div className="bg-blue-50 p-6 rounded-xl">
-                      <h3 className="text-lg font-bold text-[#00393C] mb-4">System Info</h3>
-                      <div className="space-y-2 text-sm text-[#303E3F]">
-                        <p>• Auto-save enabled</p>
-                        <p>• Real-time updates active</p>
-                        <p>• Role-based permissions</p>
-                        <p>• Data backup available</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {/* Site Information */}
-              {activeTab === 'siteinfo' && (
-                <div>
-                  <h2 className="text-2xl font-bold text-[#00393C] mb-6">Site Information</h2>
-                  {!canEdit('siteinfo') && (
-                    <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg flex items-center space-x-2">
-                      <AlertTriangle className="h-5 w-5 text-red-500" />
-                      <span className="text-red-700">You don't have permission to edit this section.</span>
-                    </div>
-                  )}
-                  <div className="space-y-6">
-                    <div>
-                      <label className="block text-sm font-medium text-[#303E3F] mb-2">School Name</label>
-                      <input
-                        type="text"
-                        value={adminData.siteInfo.schoolName}
-                        onChange={(e) => updateSiteInfo('schoolName', e.target.value)}
-                        disabled={!canEdit('siteinfo')}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F68949] disabled:bg-gray-100"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-[#303E3F] mb-2">Tagline</label>
-                      <input
-                        type="text"
-                        value={adminData.siteInfo.tagline}
-                        onChange={(e) => updateSiteInfo('tagline', e.target.value)}
-                        disabled={!canEdit('siteinfo')}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F68949] disabled:bg-gray-100"
-                      />
-                    </div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div>
-                        <label className="block text-sm font-medium text-[#303E3F] mb-2">Phone</label>
-                        <input
-                          type="text"
-                          value={adminData.siteInfo.phone}
-                          onChange={(e) => updateSiteInfo('phone', e.target.value)}
-                          disabled={!canEdit('siteinfo')}
-                          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F68949] disabled:bg-gray-100"
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium text-[#303E3F] mb-2">Email</label>
-                        <input
-                          type="email"
-                          value={adminData.siteInfo.email}
-                          onChange={(e) => updateSiteInfo('email', e.target.value)}
-                          disabled={!canEdit('siteinfo')}
-                          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F68949] disabled:bg-gray-100"
-                        />
-                      </div>
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-[#303E3F] mb-2">Address</label>
-                      <textarea
-                        value={adminData.siteInfo.address}
-                        onChange={(e) => updateSiteInfo('address', e.target.value)}
-                        disabled={!canEdit('siteinfo')}
-                        rows={3}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F68949] disabled:bg-gray-100"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-[#303E3F] mb-2">Established Year</label>
-                      <input
-                        type="text"
-                        value={adminData.siteInfo.establishedYear}
-                        onChange={(e) => updateSiteInfo('establishedYear', e.target.value)}
-                        disabled={!canEdit('siteinfo')}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F68949] disabled:bg-gray-100"
-                      />
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {/* Hero Section */}
-              {activeTab === 'hero' && (
-                <div>
-                  <h2 className="text-2xl font-bold text-[#00393C] mb-6">Hero Section</h2>
-                  {!canEdit('hero') && (
-                    <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg flex items-center space-x-2">
-                      <AlertTriangle className="h-5 w-5 text-red-500" />
-                      <span className="text-red-700">You don't have permission to edit this section.</span>
-                    </div>
-                  )}
-                  <div className="space-y-6">
-                    <div>
-                      <label className="block text-sm font-medium text-[#303E3F] mb-2">Main Title</label>
-                      <input
-                        type="text"
-                        value={adminData.heroSection.title}
-                        onChange={(e) => updateHeroSection('title', e.target.value)}
-                        disabled={!canEdit('hero')}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F68949] disabled:bg-gray-100"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-[#303E3F] mb-2">Subtitle</label>
-                      <input
-                        type="text"
-                        value={adminData.heroSection.subtitle}
-                        onChange={(e) => updateHeroSection('subtitle', e.target.value)}
-                        disabled={!canEdit('hero')}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F68949] disabled:bg-gray-100"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-[#303E3F] mb-2">Description</label>
-                      <textarea
-                        value={adminData.heroSection.description}
-                        onChange={(e) => updateHeroSection('description', e.target.value)}
-                        disabled={!canEdit('hero')}
-                        rows={4}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F68949] disabled:bg-gray-100"
-                      />
-                    </div>
-                    <div>
-                      <h3 className="text-lg font-semibold text-[#00393C] mb-4">Statistics</h3>
-                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <div>
-                          <label className="block text-sm font-medium text-[#303E3F] mb-2">Students</label>
-                          <input
-                            type="text"
-                            value={adminData.heroSection.stats.students}
-                            onChange={(e) => updateHeroSection('stats.students', e.target.value)}
-                            disabled={!canEdit('hero')}
-                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F68949] disabled:bg-gray-100"
-                          />
-                        </div>
-                        <div>
-                          <label className="block text-sm font-medium text-[#303E3F] mb-2">Teachers</label>
-                          <input
-                            type="text"
-                            value={adminData.heroSection.stats.teachers}
-                            onChange={(e) => updateHeroSection('stats.teachers', e.target.value)}
-                            disabled={!canEdit('hero')}
-                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F68949] disabled:bg-gray-100"
-                          />
-                        </div>
-                        <div>
-                          <label className="block text-sm font-medium text-[#303E3F] mb-2">Years</label>
-                          <input
-                            type="text"
-                            value={adminData.heroSection.stats.years}
-                            onChange={(e) => updateHeroSection('stats.years', e.target.value)}
-                            disabled={!canEdit('hero')}
-                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F68949] disabled:bg-gray-100"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {/* About Section */}
-              {activeTab === 'about' && (
-                <div>
-                  <h2 className="text-2xl font-bold text-[#00393C] mb-6">About Section</h2>
-                  {!canEdit('about') && (
-                    <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg flex items-center space-x-2">
-                      <AlertTriangle className="h-5 w-5 text-red-500" />
-                      <span className="text-red-700">You don't have permission to edit this section.</span>
-                    </div>
-                  )}
-                  <div className="space-y-6">
-                    <div>
-                      <label className="block text-sm font-medium text-[#303E3F] mb-2">Vision</label>
-                      <textarea
-                        value={adminData.aboutSection.vision}
-                        onChange={(e) => updateAboutSection('vision', e.target.value)}
-                        disabled={!canEdit('about')}
-                        rows={3}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F68949] disabled:bg-gray-100"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-[#303E3F] mb-2">Mission</label>
-                      <textarea
-                        value={adminData.aboutSection.mission}
-                        onChange={(e) => updateAboutSection('mission', e.target.value)}
-                        disabled={!canEdit('about')}
-                        rows={3}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F68949] disabled:bg-gray-100"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-[#303E3F] mb-2">Core Values</label>
-                      <textarea
-                        value={adminData.aboutSection.coreValues}
-                        onChange={(e) => updateAboutSection('coreValues', e.target.value)}
-                        disabled={!canEdit('about')}
-                        rows={3}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F68949] disabled:bg-gray-100"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-[#303E3F] mb-2">Principal's Message</label>
-                      <textarea
-                        value={adminData.aboutSection.principalMessage}
-                        onChange={(e) => updateAboutSection('principalMessage', e.target.value)}
-                        disabled={!canEdit('about')}
-                        rows={5}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F68949] disabled:bg-gray-100"
-                      />
-                    </div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div>
-                        <label className="block text-sm font-medium text-[#303E3F] mb-2">Principal Name</label>
-                        <input
-                          type="text"
-                          value={adminData.aboutSection.principalName}
-                          onChange={(e) => updateAboutSection('principalName', e.target.value)}
-                          disabled={!canEdit('about')}
-                          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F68949] disabled:bg-gray-100"
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium text-[#303E3F] mb-2">Principal Title</label>
-                        <input
-                          type="text"
-                          value={adminData.aboutSection.principalTitle}
-                          onChange={(e) => updateAboutSection('principalTitle', e.target.value)}
-                          disabled={!canEdit('about')}
-                          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F68949] disabled:bg-gray-100"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {/* News Management */}
-              {activeTab === 'news' && (
-                <div>
-                  <div className="flex items-center justify-between mb-6">
-                    <h2 className="text-2xl font-bold text-[#00393C]">News & Events</h2>
-                    <button
-                      onClick={addNewsItem}
-                      className="bg-[#F68949] text-white px-4 py-2 rounded-lg font-medium hover:bg-[#946F5C] transition-colors flex items-center"
-                    >
-                      <Plus className="h-4 w-4 mr-2" />
-                      Add Article
-                    </button>
-                  </div>
-
-                  <div className="space-y-4">
-                    {adminData.news.map((article) => (
-                      <div key={article.id} className="border border-gray-200 rounded-lg p-4">
-                        <div className="flex items-center justify-between mb-4">
-                          <div className="flex items-center space-x-3">
-                            <h3 className="font-semibold text-[#00393C]">{article.title}</h3>
-                            {article.featured && (
-                              <span className="bg-[#F68949] text-white px-2 py-1 rounded text-xs">Featured</span>
-                            )}
-                          </div>
-                          <div className="flex items-center space-x-2">
-                            <button
-                              onClick={() => setEditingItem(article)}
-                              className="text-blue-600 hover:text-blue-800"
-                            >
-                              <Edit className="h-4 w-4" />
-                            </button>
-                            <button
-                              onClick={() => deleteNewsItem(article.id)}
-                              className="text-red-600 hover:text-red-800"
-                            >
-                              <Trash2 className="h-4 w-4" />
-                            </button>
-                          </div>
-                        </div>
-                        <p className="text-[#303E3F] text-sm mb-2">{article.excerpt}</p>
-                        <div className="flex items-center space-x-4 text-xs text-gray-500">
-                          <span>By {article.author}</span>
-                          <span>{article.date}</span>
-                          <span className="bg-gray-100 px-2 py-1 rounded">{article.category}</span>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {/* User Management - Only for Super Admin */}
-              {activeTab === 'users' && currentUser?.role === 'superadmin' && (
-                <div>
-                  <div className="flex items-center justify-between mb-6">
-                    <h2 className="text-2xl font-bold text-[#00393C]">User Management</h2>
-                    <div className="text-sm text-[#303E3F]">
-                      Total Users: {users.length}
-                    </div>
-                  </div>
-
-                  {/* Add New User Form */}
-                  <div className="bg-[#FFE8D2] rounded-2xl p-6 mb-8">
-                    <h3 className="text-lg font-bold text-[#00393C] mb-4">Add New User</h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                      <div>
-                        <label className="block text-sm font-medium text-[#303E3F] mb-2">Username *</label>
-                        <input
-                          type="text"
-                          value={newUser.username}
-                          onChange={(e) => setNewUser(prev => ({ ...prev, username: e.target.value }))}
-                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F68949]"
-                          placeholder="Enter username"
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium text-[#303E3F] mb-2">Password *</label>
-                        <div className="relative">
-                          <input
-                            type={showUserPassword ? 'text' : 'password'}
-                            value={newUser.password}
-                            onChange={(e) => setNewUser(prev => ({ ...prev, password: e.target.value }))}
-                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F68949]"
-                            placeholder="Enter password"
-                          />
-                          <button
-                            type="button"
-                            onClick={() => setShowUserPassword(!showUserPassword)}
-                            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-[#303E3F]"
-                          >
-                            {showUserPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                          </button>
-                        </div>
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium text-[#303E3F] mb-2">Full Name *</label>
-                        <input
-                          type="text"
-                          value={newUser.name}
-                          onChange={(e) => setNewUser(prev => ({ ...prev, name: e.target.value }))}
-                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F68949]"
-                          placeholder="Enter full name"
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium text-[#303E3F] mb-2">Email</label>
-                        <input
-                          type="email"
-                          value={newUser.email}
-                          onChange={(e) => setNewUser(prev => ({ ...prev, email: e.target.value }))}
-                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F68949]"
-                          placeholder="Enter email"
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium text-[#303E3F] mb-2">Role *</label>
-                        <select
-                          value={newUser.role}
-                          onChange={(e) => setNewUser(prev => ({ ...prev, role: e.target.value as UserRole }))}
-                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F68949]"
-                        >
-                          <option value="admin">Admin</option>
-                          <option value="superadmin">Super Admin</option>
-                        </select>
-                      </div>
-                      <div className="flex items-end">
-                        <button
-                          onClick={addUser}
-                          className="w-full bg-[#F68949] text-white px-4 py-2 rounded-lg font-medium hover:bg-[#946F5C] transition-colors flex items-center justify-center"
-                        >
-                          <Plus className="h-4 w-4 mr-2" />
-                          Add User
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Users List */}
-                  <div className="space-y-4">
-                    {users.map((user) => (
-                      <div key={user.id} className="bg-white border border-gray-200 rounded-lg p-6">
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center space-x-4">
-                            <div className="flex items-center space-x-2">
-                              {user.role === 'superadmin' ? 
-                                <Shield className="h-5 w-5 text-yellow-500" /> : 
-                                <User className="h-5 w-5 text-blue-500" />
-                              }
-                              <div>
-                                <h3 className="font-semibold text-[#00393C]">{user.name}</h3>
-                                <p className="text-sm text-[#303E3F]">@{user.username}</p>
-                              </div>
-                            </div>
-                            <div className="text-sm">
-                              <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                                user.role === 'superadmin' 
-                                  ? 'bg-yellow-100 text-yellow-800' 
-                                  : 'bg-blue-100 text-blue-800'
-                              }`}>
-                                {user.role === 'superadmin' ? 'Super Admin' : 'Admin'}
-                              </span>
-                            </div>
-                          </div>
-                          <div className="flex items-center space-x-2">
-                            <button
-                              onClick={() => setEditingUser(user)}
-                              className="text-blue-600 hover:text-blue-800 p-2 rounded-lg hover:bg-blue-50"
-                            >
-                              <Edit className="h-4 w-4" />
-                            </button>
-                            <button
-                              onClick={() => deleteUser(user.id)}
-                              disabled={user.id === currentUser?.id}
-                              className="text-red-600 hover:text-red-800 p-2 rounded-lg hover:bg-red-50 disabled:opacity-50 disabled:cursor-not-allowed"
-                            >
-                              <Trash2 className="h-4 w-4" />
-                            </button>
-                          </div>
-                        </div>
-                        <div className="mt-4 grid grid-cols-1 md:grid-cols-3 gap-4 text-sm text-[#303E3F]">
-                          <div>
-                            <span className="font-medium">Email:</span> {user.email || 'Not provided'}
-                          </div>
-                          <div>
-                            <span className="font-medium">Created:</span> {new Date(user.createdAt).toLocaleDateString()}
-                          </div>
-                          <div>
-                            <span className="font-medium">Last Login:</span> {
-                              user.lastLogin ? new Date(user.lastLogin).toLocaleDateString() : 'Never'
-                            }
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
+          <button
+            onClick={handleLogout}
+            className="w-full bg-red-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-red-700 transition-colors flex items-center justify-center space-x-2"
+          >
+            <LogOut className="h-4 w-4" />
+            <span>Logout</span>
+          </button>
         </div>
       </div>
 
-      {/* Edit Modal */}
-      {editingItem && (
-        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-auto p-6">
-            <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-bold text-[#00393C]">Edit Article</h3>
-              <button
-                onClick={() => setEditingItem(null)}
-                className="text-gray-500 hover:text-gray-700"
-              >
-                ✕
-              </button>
+      {/* Main Content */}
+      <div className="flex-1 p-8">
+        <div className="max-w-6xl mx-auto">
+          {/* Header */}
+          <div className="flex justify-between items-center mb-8">
+            <div>
+              <h2 className="text-3xl font-bold text-[#00393C] capitalize">
+                {activeSection.replace(/([A-Z])/g, ' $1').trim()}
+              </h2>
+              <p className="text-[#303E3F]">Manage your website content</p>
             </div>
-            
-            <div className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-[#303E3F] mb-2">Title</label>
-                <input
-                  type="text"
-                  value={editingItem.title}
-                  onChange={(e) => setEditingItem(prev => ({ ...prev, title: e.target.value }))}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F68949]"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-[#303E3F] mb-2">Excerpt</label>
-                <textarea
-                  value={editingItem.excerpt}
-                  onChange={(e) => setEditingItem(prev => ({ ...prev, excerpt: e.target.value }))}
-                  rows={3}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F68949]"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-[#303E3F] mb-2">Content</label>
-                <textarea
-                  value={editingItem.content}
-                  onChange={(e) => setEditingItem(prev => ({ ...prev, content: e.target.value }))}
-                  rows={8}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F68949]"
-                />
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-[#303E3F] mb-2">Category</label>
-                  <select
-                    value={editingItem.category}
-                    onChange={(e) => setEditingItem(prev => ({ ...prev, category: e.target.value }))}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F68949]"
-                  >
-                    <option value="General">General</option>
-                    <option value="Facilities">Facilities</option>
-                    <option value="Events">Events</option>
-                    <option value="Notices">Notices</option>
-                    <option value="Arts">Arts</option>
-                    <option value="Technology">Technology</option>
-                    <option value="Community">Community</option>
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-[#303E3F] mb-2">Author</label>
-                  <input
-                    type="text"
-                    value={editingItem.author}
-                    onChange={(e) => setEditingItem(prev => ({ ...prev, author: e.target.value }))}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F68949]"
-                  />
-                </div>
-              </div>
-              <div className="flex items-center space-x-4">
-                <label className="flex items-center space-x-2">
-                  <input
-                    type="checkbox"
-                    checked={editingItem.featured}
-                    onChange={(e) => setEditingItem(prev => ({ ...prev, featured: e.target.checked }))}
-                    className="rounded border-gray-300 text-[#F68949] focus:ring-[#F68949]"
-                  />
-                  <span className="text-sm text-[#303E3F]">Featured Article</span>
-                </label>
-              </div>
-            </div>
-
-            <div className="flex justify-end space-x-4 mt-6">
-              <button
-                onClick={() => setEditingItem(null)}
-                className="px-6 py-2 border border-gray-300 rounded-lg text-[#303E3F] hover:bg-gray-50 transition-colors"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={() => {
-                  updateNewsItem(editingItem.id, editingItem);
-                  setEditingItem(null);
-                  showNotification('success', 'Article updated successfully!');
-                }}
-                className="px-6 py-2 bg-[#F68949] text-white rounded-lg hover:bg-[#946F5C] transition-colors"
-              >
-                Save Changes
-              </button>
-            </div>
+            <button
+              onClick={() => {
+                localStorage.setItem('roohAdminData', JSON.stringify(adminData));
+                alert('Changes saved successfully!');
+              }}
+              className="bg-[#00393C] text-white px-6 py-2 rounded-lg font-medium hover:bg-[#303E3F] transition-colors flex items-center space-x-2"
+            >
+              <Save className="h-4 w-4" />
+              <span>Save Changes</span>
+            </button>
           </div>
-        </div>
-      )}
 
-      {/* Edit User Modal */}
-      {editingUser && (
-        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl max-w-md w-full p-6">
-            <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-bold text-[#00393C]">Edit User</h3>
-              <button
-                onClick={() => setEditingUser(null)}
-                className="text-gray-500 hover:text-gray-700"
-              >
-                <X className="h-6 w-6" />
-              </button>
+          {/* Content Sections */}
+          {activeSection === 'dashboard' && (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              <div className="bg-white p-6 rounded-lg shadow">
+                <h3 className="text-lg font-semibold text-[#00393C] mb-2">Total Users</h3>
+                <p className="text-3xl font-bold text-[#F68949]">{users.length}</p>
+              </div>
+              <div className="bg-white p-6 rounded-lg shadow">
+                <h3 className="text-lg font-semibold text-[#00393C] mb-2">News Articles</h3>
+                <p className="text-3xl font-bold text-[#F68949]">{adminData.news.length}</p>
+              </div>
+              <div className="bg-white p-6 rounded-lg shadow">
+                <h3 className="text-lg font-semibold text-[#00393C] mb-2">Testimonials</h3>
+                <p className="text-3xl font-bold text-[#F68949]">{adminData.testimonials.length}</p>
+              </div>
+              <div className="bg-white p-6 rounded-lg shadow">
+                <h3 className="text-lg font-semibold text-[#00393C] mb-2">Gallery Images</h3>
+                <p className="text-3xl font-bold text-[#F68949]">{adminData.gallery.length}</p>
+              </div>
             </div>
-            
-            <div className="space-y-4">
+          )}
+
+          {activeSection === 'siteInfo' && (
+            <div className="bg-white p-6 rounded-lg shadow space-y-6">
               <div>
-                <label className="block text-sm font-medium text-[#303E3F] mb-2">Username</label>
+                <label className="block text-sm font-medium text-[#303E3F] mb-2">School Name</label>
                 <input
                   type="text"
-                  value={editingUser.username}
-                  onChange={(e) => setEditingUser(prev => prev ? ({ ...prev, username: e.target.value }) : null)}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F68949]"
+                  value={adminData.siteInfo.schoolName}
+                  onChange={(e) => updateAdminData('siteInfo', 'schoolName', e.target.value)}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F68949]"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-[#303E3F] mb-2">Password</label>
-                <input
-                  type="password"
-                  value={editingUser.password}
-                  onChange={(e) => setEditingUser(prev => prev ? ({ ...prev, password: e.target.value }) : null)}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F68949]"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-[#303E3F] mb-2">Full Name</label>
+                <label className="block text-sm font-medium text-[#303E3F] mb-2">Phone</label>
                 <input
                   type="text"
-                  value={editingUser.name}
-                  onChange={(e) => setEditingUser(prev => prev ? ({ ...prev, name: e.target.value }) : null)}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F68949]"
+                  value={adminData.siteInfo.phone}
+                  onChange={(e) => updateAdminData('siteInfo', 'phone', e.target.value)}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F68949]"
                 />
               </div>
               <div>
                 <label className="block text-sm font-medium text-[#303E3F] mb-2">Email</label>
                 <input
                   type="email"
-                  value={editingUser.email || ''}
-                  onChange={(e) => setEditingUser(prev => prev ? ({ ...prev, email: e.target.value }) : null)}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F68949]"
+                  value={adminData.siteInfo.email}
+                  onChange={(e) => updateAdminData('siteInfo', 'email', e.target.value)}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F68949]"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-[#303E3F] mb-2">Role</label>
-                <select
-                  value={editingUser.role}
-                  onChange={(e) => setEditingUser(prev => prev ? ({ ...prev, role: e.target.value as UserRole }) : null)}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F68949]"
-                >
-                  <option value="admin">Admin</option>
-                  <option value="superadmin">Super Admin</option>
-                </select>
+                <label className="block text-sm font-medium text-[#303E3F] mb-2">Address</label>
+                <textarea
+                  value={adminData.siteInfo.address}
+                  onChange={(e) => updateAdminData('siteInfo', 'address', e.target.value)}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F68949]"
+                  rows={3}
+                />
               </div>
             </div>
+          )}
 
-            <div className="flex justify-end space-x-4 mt-6">
-              <button
-                onClick={() => setEditingUser(null)}
-                className="px-6 py-2 border border-gray-300 rounded-lg text-[#303E3F] hover:bg-gray-50 transition-colors"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={() => updateUser(editingUser)}
-                className="px-6 py-2 bg-[#F68949] text-white rounded-lg hover:bg-[#946F5C] transition-colors"
-              >
-                Save Changes
-              </button>
+          {activeSection === 'heroSection' && (
+            <div className="bg-white p-6 rounded-lg shadow space-y-6">
+              <div>
+                <label className="block text-sm font-medium text-[#303E3F] mb-2">Hero Title</label>
+                <input
+                  type="text"
+                  value={adminData.heroSection.title}
+                  onChange={(e) => updateAdminData('heroSection', 'title', e.target.value)}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F68949]"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-[#303E3F] mb-2">Description</label>
+                <textarea
+                  value={adminData.heroSection.description}
+                  onChange={(e) => updateAdminData('heroSection', 'description', e.target.value)}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F68949]"
+                  rows={4}
+                />
+              </div>
+              <div className="grid grid-cols-3 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-[#303E3F] mb-2">Students</label>
+                  <input
+                    type="text"
+                    value={adminData.heroSection.stats.students}
+                    onChange={(e) => updateNestedData('heroSection', 'stats', 'students', e.target.value)}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F68949]"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-[#303E3F] mb-2">Teachers</label>
+                  <input
+                    type="text"
+                    value={adminData.heroSection.stats.teachers}
+                    onChange={(e) => updateNestedData('heroSection', 'stats', 'teachers', e.target.value)}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F68949]"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-[#303E3F] mb-2">Years</label>
+                  <input
+                    type="text"
+                    value={adminData.heroSection.stats.years}
+                    onChange={(e) => updateNestedData('heroSection', 'stats', 'years', e.target.value)}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F68949]"
+                  />
+                </div>
+              </div>
             </div>
-          </div>
+          )}
+
+          {activeSection === 'aboutSection' && (
+            <div className="bg-white p-6 rounded-lg shadow space-y-6">
+              <div>
+                <label className="block text-sm font-medium text-[#303E3F] mb-2">Vision</label>
+                <textarea
+                  value={adminData.aboutSection.vision}
+                  onChange={(e) => updateAdminData('aboutSection', 'vision', e.target.value)}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F68949]"
+                  rows={3}
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-[#303E3F] mb-2">Mission</label>
+                <textarea
+                  value={adminData.aboutSection.mission}
+                  onChange={(e) => updateAdminData('aboutSection', 'mission', e.target.value)}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F68949]"
+                  rows={3}
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-[#303E3F] mb-2">Principal Name</label>
+                <input
+                  type="text"
+                  value={adminData.aboutSection.principalName}
+                  onChange={(e) => updateAdminData('aboutSection', 'principalName', e.target.value)}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F68949]"
+                />
+              </div>
+            </div>
+          )}
+
+          {activeSection === 'testimonials' && (
+            <div className="space-y-6">
+              <div className="flex justify-between items-center">
+                <h3 className="text-xl font-semibold text-[#00393C]">Testimonials</h3>
+                <button
+                  onClick={addTestimonial}
+                  className="bg-[#F68949] text-white px-4 py-2 rounded-lg font-medium hover:bg-[#946F5C] transition-colors flex items-center space-x-2"
+                >
+                  <Plus className="h-4 w-4" />
+                  <span>Add Testimonial</span>
+                </button>
+              </div>
+
+              <div className="grid gap-6">
+                {adminData.testimonials.map((testimonial) => (
+                  <div key={testimonial.id} className="bg-white p-6 rounded-lg shadow">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                      <div>
+                        <label className="block text-sm font-medium text-[#303E3F] mb-2">Parent Name</label>
+                        <input
+                          type="text"
+                          value={testimonial.name}
+                          onChange={(e) => updateTestimonial(testimonial.id, 'name', e.target.value)}
+                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F68949]"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-[#303E3F] mb-2">Role</label>
+                        <input
+                          type="text"
+                          value={testimonial.role}
+                          onChange={(e) => updateTestimonial(testimonial.id, 'role', e.target.value)}
+                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F68949]"
+                        />
+                      </div>
+                    </div>
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                      <div>
+                        <label className="block text-sm font-medium text-[#303E3F] mb-2">Student Name</label>
+                        <input
+                          type="text"
+                          value={testimonial.studentName}
+                          onChange={(e) => updateTestimonial(testimonial.id, 'studentName', e.target.value)}
+                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F68949]"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-[#303E3F] mb-2">Rating</label>
+                        <select
+                          value={testimonial.rating}
+                          onChange={(e) => updateTestimonial(testimonial.id, 'rating', parseInt(e.target.value))}
+                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F68949]"
+                        >
+                          {[1, 2, 3, 4, 5].map(rating => (
+                            <option key={rating} value={rating}>{rating} Star{rating > 1 ? 's' : ''}</option>
+                          ))}
+                        </select>
+                      </div>
+                    </div>
+
+                    <div className="mb-4">
+                      <label className="block text-sm font-medium text-[#303E3F] mb-2">Testimonial Content</label>
+                      <textarea
+                        value={testimonial.content}
+                        onChange={(e) => updateTestimonial(testimonial.id, 'content', e.target.value)}
+                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F68949]"
+                        rows={3}
+                      />
+                    </div>
+
+                    <div className="flex justify-end">
+                      <button
+                        onClick={() => deleteTestimonial(testimonial.id)}
+                        className="bg-red-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-red-700 transition-colors flex items-center space-x-2"
+                      >
+                        <Trash2 className="h-4 w-4" />
+                        <span>Delete</span>
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {activeSection === 'gallery' && (
+            <div className="space-y-6">
+              <div className="flex justify-between items-center">
+                <h3 className="text-xl font-semibold text-[#00393C]">Gallery</h3>
+                <button
+                  onClick={addGalleryItem}
+                  className="bg-[#F68949] text-white px-4 py-2 rounded-lg font-medium hover:bg-[#946F5C] transition-colors flex items-center space-x-2"
+                >
+                  <Plus className="h-4 w-4" />
+                  <span>Add Image</span>
+                </button>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {adminData.gallery.map((item) => (
+                  <div key={item.id} className="bg-white p-4 rounded-lg shadow">
+                    <img
+                      src={item.imageUrl}
+                      alt={item.title}
+                      className="w-full h-48 object-cover rounded-lg mb-4"
+                    />
+                    
+                    <div className="space-y-3">
+                      <div>
+                        <label className="block text-sm font-medium text-[#303E3F] mb-1">Title</label>
+                        <input
+                          type="text"
+                          value={item.title}
+                          onChange={(e) => updateGalleryItem(item.id, 'title', e.target.value)}
+                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F68949]"
+                        />
+                      </div>
+                      
+                      <div>
+                        <label className="block text-sm font-medium text-[#303E3F] mb-1">Category</label>
+                        <select
+                          value={item.category}
+                          onChange={(e) => updateGalleryItem(item.id, 'category', e.target.value)}
+                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F68949]"
+                        >
+                          <option value="Academics">Academics</option>
+                          <option value="Facilities">Facilities</option>
+                          <option value="Arts">Arts</option>
+                          <option value="Sports">Sports</option>
+                          <option value="Events">Events</option>
+                          <option value="Technology">Technology</option>
+                          <option value="Recreation">Recreation</option>
+                        </select>
+                      </div>
+                      
+                      <div>
+                        <label className="block text-sm font-medium text-[#303E3F] mb-1">Image URL</label>
+                        <input
+                          type="url"
+                          value={item.imageUrl}
+                          onChange={(e) => updateGalleryItem(item.id, 'imageUrl', e.target.value)}
+                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F68949]"
+                        />
+                      </div>
+                      
+                      <button
+                        onClick={() => deleteGalleryItem(item.id)}
+                        className="w-full bg-red-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-red-700 transition-colors flex items-center justify-center space-x-2"
+                      >
+                        <Trash2 className="h-4 w-4" />
+                        <span>Delete</span>
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {activeSection === 'contactInfo' && (
+            <div className="bg-white p-6 rounded-lg shadow space-y-6">
+              <h3 className="text-xl font-semibold text-[#00393C] mb-4">Contact Information</h3>
+              
+              <div>
+                <label className="block text-sm font-medium text-[#303E3F] mb-2">Phone Number</label>
+                <input
+                  type="text"
+                  value={adminData.contactInfo.phone}
+                  onChange={(e) => updateAdminData('contactInfo', 'phone', e.target.value)}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F68949]"
+                />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-[#303E3F] mb-2">Email Address</label>
+                <input
+                  type="email"
+                  value={adminData.contactInfo.email}
+                  onChange={(e) => updateAdminData('contactInfo', 'email', e.target.value)}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F68949]"
+                />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-[#303E3F] mb-2">Address</label>
+                <textarea
+                  value={adminData.contactInfo.address}
+                  onChange={(e) => updateAdminData('contactInfo', 'address', e.target.value)}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F68949]"
+                  rows={3}
+                />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-[#303E3F] mb-2">Office Hours</label>
+                <input
+                  type="text"
+                  value={adminData.contactInfo.officeHours}
+                  onChange={(e) => updateAdminData('contactInfo', 'officeHours', e.target.value)}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F68949]"
+                />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-[#303E3F] mb-2">Emergency Contact</label>
+                <input
+                  type="text"
+                  value={adminData.contactInfo.emergencyContact}
+                  onChange={(e) => updateAdminData('contactInfo', 'emergencyContact', e.target.value)}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F68949]"
+                />
+              </div>
+            </div>
+          )}
+
+          {activeSection === 'userManagement' && currentUser?.role === 'superadmin' && (
+            <div className="space-y-6">
+              <div className="flex justify-between items-center">
+                <h3 className="text-xl font-semibold text-[#00393C]">User Management</h3>
+                <div className="text-sm text-[#303E3F]">Total Users: {users.length}</div>
+              </div>
+
+              {/* Add New User Form */}
+              <div className="bg-white p-6 rounded-lg shadow">
+                <h4 className="text-lg font-semibold text-[#00393C] mb-4">Add New User</h4>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                  <div>
+                    <label className="block text-sm font-medium text-[#303E3F] mb-2">Username *</label>
+                    <input
+                      type="text"
+                      value={newUser.username}
+                      onChange={(e) => setNewUser({...newUser, username: e.target.value})}
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F68949]"
+                      placeholder="Enter username"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-[#303E3F] mb-2">Password *</label>
+                    <input
+                      type="password"
+                      value={newUser.password}
+                      onChange={(e) => setNewUser({...newUser, password: e.target.value})}
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F68949]"
+                      placeholder="Enter password"
+                    />
+                  </div>
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                  <div>
+                    <label className="block text-sm font-medium text-[#303E3F] mb-2">Full Name *</label>
+                    <input
+                      type="text"
+                      value={newUser.fullName}
+                      onChange={(e) => setNewUser({...newUser, fullName: e.target.value})}
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F68949]"
+                      placeholder="Enter full name"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-[#303E3F] mb-2">Email</label>
+                    <input
+                      type="email"
+                      value={newUser.email}
+                      onChange={(e) => setNewUser({...newUser, email: e.target.value})}
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F68949]"
+                      placeholder="Enter email"
+                    />
+                  </div>
+                </div>
+                
+                <div className="mb-4">
+                  <label className="block text-sm font-medium text-[#303E3F] mb-2">Role</label>
+                  <select
+                    value={newUser.role}
+                    onChange={(e) => setNewUser({...newUser, role: e.target.value as 'admin' | 'superadmin'})}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F68949]"
+                  >
+                    <option value="admin">Admin</option>
+                    <option value="superadmin">Super Admin</option>
+                  </select>
+                </div>
+                
+                <button
+                  onClick={addUser}
+                  className="bg-[#F68949] text-white px-6 py-2 rounded-lg font-medium hover:bg-[#946F5C] transition-colors flex items-center space-x-2"
+                >
+                  <Plus className="h-4 w-4" />
+                  <span>Add User</span>
+                </button>
+              </div>
+
+              {/* Users Table */}
+              <div className="bg-white rounded-lg shadow overflow-hidden">
+                <table className="w-full">
+                  <thead className="bg-gray-50">
+                    <tr>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">User</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Role</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Created</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody className="bg-white divide-y divide-gray-200">
+                    {users.map((user) => (
+                      <tr key={user.id}>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <div className="flex items-center">
+                            {user.role === 'superadmin' ? (
+                              <Shield className="h-5 w-5 text-yellow-600 mr-2" />
+                            ) : (
+                              <User className="h-5 w-5 text-blue-600 mr-2" />
+                            )}
+                            <div>
+                              <div className="text-sm font-medium text-gray-900">{user.fullName}</div>
+                              <div className="text-sm text-gray-500">@{user.username}</div>
+                            </div>
+                          </div>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
+                            user.role === 'superadmin' 
+                              ? 'bg-yellow-100 text-yellow-800' 
+                              : 'bg-blue-100 text-blue-800'
+                          }`}>
+                            {user.role === 'superadmin' ? 'Super Admin' : 'Admin'}
+                          </span>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                          {user.email || 'N/A'}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                          {new Date(user.createdAt).toLocaleDateString()}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
+                          <button
+                            onClick={() => setEditingUser(user)}
+                            className="text-[#F68949] hover:text-[#946F5C] transition-colors"
+                          >
+                            <Edit className="h-4 w-4" />
+                          </button>
+                          <button
+                            onClick={() => deleteUser(user.id)}
+                            className="text-red-600 hover:text-red-800 transition-colors"
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+
+              {/* Edit User Modal */}
+              {editingUser && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                  <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full mx-4">
+                    <h4 className="text-lg font-semibold text-[#00393C] mb-4">Edit User</h4>
+                    <div className="space-y-4">
+                      <div>
+                        <label className="block text-sm font-medium text-[#303E3F] mb-2">Username</label>
+                        <input
+                          type="text"
+                          value={editingUser.username}
+                          onChange={(e) => setEditingUser({...editingUser, username: e.target.value})}
+                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F68949]"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-[#303E3F] mb-2">Full Name</label>
+                        <input
+                          type="text"
+                          value={editingUser.fullName}
+                          onChange={(e) => setEditingUser({...editingUser, fullName: e.target.value})}
+                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F68949]"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-[#303E3F] mb-2">Email</label>
+                        <input
+                          type="email"
+                          value={editingUser.email}
+                          onChange={(e) => setEditingUser({...editingUser, email: e.target.value})}
+                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F68949]"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-[#303E3F] mb-2">Role</label>
+                        <select
+                          value={editingUser.role}
+                          onChange={(e) => setEditingUser({...editingUser, role: e.target.value as 'admin' | 'superadmin'})}
+                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F68949]"
+                        >
+                          <option value="admin">Admin</option>
+                          <option value="superadmin">Super Admin</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div className="flex justify-end space-x-4 mt-6">
+                      <button
+                        onClick={() => setEditingUser(null)}
+                        className="px-4 py-2 text-[#303E3F] border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        onClick={() => updateUser(editingUser)}
+                        className="px-4 py-2 bg-[#F68949] text-white rounded-lg hover:bg-[#946F5C] transition-colors"
+                      >
+                        Update
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
         </div>
-      )}
+      </div>
     </div>
   );
 };
