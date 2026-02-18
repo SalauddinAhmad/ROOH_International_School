@@ -5,24 +5,34 @@ import { useAdmin } from '../contexts/AdminContext';
 type UserRole = 'superadmin' | 'admin';
 
 interface User {
+  id: string;
   username: string;
   password: string;
   role: UserRole;
   name: string;
+  email?: string;
+  createdAt: string;
+  lastLogin?: string;
 }
 
-const defaultUsers: User[] = [
+const getDefaultUsers = (): User[] => [
   {
+    id: '1',
     username: 'superadmin',
     password: 'rooh2024super',
     role: 'superadmin',
-    name: 'Super Administrator'
+    name: 'Super Administrator',
+    email: 'superadmin@roohschool.edu.bd',
+    createdAt: '2024-01-01'
   },
   {
+    id: '2',
     username: 'admin',
     password: 'rooh2024',
     role: 'admin',
-    name: 'Administrator'
+    name: 'Administrator',
+    email: 'admin@roohschool.edu.bd',
+    createdAt: '2024-01-01'
   }
 ];
 
@@ -34,6 +44,16 @@ const Admin = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [editingItem, setEditingItem] = useState<any>(null);
   const [notification, setNotification] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
+  const [users, setUsers] = useState<User[]>(getDefaultUsers());
+  const [editingUser, setEditingUser] = useState<User | null>(null);
+  const [newUser, setNewUser] = useState<Partial<User>>({
+    username: '',
+    password: '',
+    name: '',
+    email: '',
+    role: 'admin'
+  });
+  const [showUserPassword, setShowUserPassword] = useState(false);
 
   const {
     adminData,
@@ -60,15 +80,18 @@ const Admin = () => {
   // Authentication
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    const user = defaultUsers.find(u => 
+    const user = users.find(u => 
       u.username === loginData.username && u.password === loginData.password
     );
     
     if (user) {
+      const updatedUser = { ...user, lastLogin: new Date().toISOString() };
+      setUsers(prev => prev.map(u => u.id === user.id ? updatedUser : u));
       setIsAuthenticated(true);
-      setCurrentUser(user);
-      localStorage.setItem('adminAuth', JSON.stringify(user));
-      showNotification('success', `Welcome ${user.name}!`);
+      setCurrentUser(updatedUser);
+      localStorage.setItem('adminAuth', JSON.stringify(updatedUser));
+      localStorage.setItem('adminUsers', JSON.stringify(users));
+      showNotification('success', `Welcome ${updatedUser.name}!`);
     } else {
       showNotification('error', 'Invalid credentials!');
     }
@@ -82,6 +105,57 @@ const Admin = () => {
     showNotification('success', 'Logged out successfully');
   };
 
+  // User Management Functions
+  const addUser = () => {
+    if (!newUser.username || !newUser.password || !newUser.name) {
+      showNotification('error', 'Please fill all required fields!');
+      return;
+    }
+
+    if (users.find(u => u.username === newUser.username)) {
+      showNotification('error', 'Username already exists!');
+      return;
+    }
+
+    const user: User = {
+      id: Date.now().toString(),
+      username: newUser.username!,
+      password: newUser.password!,
+      name: newUser.name!,
+      email: newUser.email || '',
+      role: newUser.role as UserRole,
+      createdAt: new Date().toISOString()
+    };
+
+    setUsers(prev => [...prev, user]);
+    localStorage.setItem('adminUsers', JSON.stringify([...users, user]));
+    setNewUser({ username: '', password: '', name: '', email: '', role: 'admin' });
+    showNotification('success', 'User added successfully!');
+  };
+
+  const updateUser = (updatedUser: User) => {
+    setUsers(prev => prev.map(u => u.id === updatedUser.id ? updatedUser : u));
+    localStorage.setItem('adminUsers', JSON.stringify(users.map(u => u.id === updatedUser.id ? updatedUser : u)));
+    setEditingUser(null);
+    showNotification('success', 'User updated successfully!');
+  };
+
+  const deleteUser = (userId: string) => {
+    if (userId === currentUser?.id) {
+      showNotification('error', 'Cannot delete your own account!');
+      return;
+    }
+    
+    if (users.filter(u => u.role === 'superadmin').length === 1 && users.find(u => u.id === userId)?.role === 'superadmin') {
+      showNotification('error', 'Cannot delete the last super admin!');
+      return;
+    }
+
+    setUsers(prev => prev.filter(u => u.id !== userId));
+    localStorage.setItem('adminUsers', JSON.stringify(users.filter(u => u.id !== userId)));
+    showNotification('success', 'User deleted successfully!');
+  };
+
   const showNotification = (type: 'success' | 'error', message: string) => {
     setNotification({ type, message });
     setTimeout(() => setNotification(null), 3000);
@@ -89,6 +163,16 @@ const Admin = () => {
 
   useEffect(() => {
     const auth = localStorage.getItem('adminAuth');
+    const savedUsers = localStorage.getItem('adminUsers');
+    
+    if (savedUsers) {
+      try {
+        setUsers(JSON.parse(savedUsers));
+      } catch (error) {
+        setUsers(getDefaultUsers());
+      }
+    }
+    
     if (auth) {
       try {
         const user = JSON.parse(auth);
@@ -250,7 +334,9 @@ const Admin = () => {
                   { id: 'testimonials', label: 'Testimonials', icon: Users, restricted: false },
                   { id: 'gallery', label: 'Gallery', icon: Image, restricted: false },
                   { id: 'contact', label: 'Contact Info', icon: Phone, restricted: false }
-                ].map((item) => {
+                ].concat(currentUser?.role === 'superadmin' ? [
+                  { id: 'users', label: 'User Management', icon: Users, restricted: false }
+                ] : []).map((item) => {
                   const isRestricted = item.restricted && !canEdit(item.id);
                   return (
                     <button
@@ -673,6 +759,153 @@ const Admin = () => {
                   </div>
                 </div>
               )}
+
+              {/* User Management - Only for Super Admin */}
+              {activeTab === 'users' && currentUser?.role === 'superadmin' && (
+                <div>
+                  <div className="flex items-center justify-between mb-6">
+                    <h2 className="text-2xl font-bold text-[#00393C]">User Management</h2>
+                    <div className="text-sm text-[#303E3F]">
+                      Total Users: {users.length}
+                    </div>
+                  </div>
+
+                  {/* Add New User Form */}
+                  <div className="bg-[#FFE8D2] rounded-2xl p-6 mb-8">
+                    <h3 className="text-lg font-bold text-[#00393C] mb-4">Add New User</h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                      <div>
+                        <label className="block text-sm font-medium text-[#303E3F] mb-2">Username *</label>
+                        <input
+                          type="text"
+                          value={newUser.username}
+                          onChange={(e) => setNewUser(prev => ({ ...prev, username: e.target.value }))}
+                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F68949]"
+                          placeholder="Enter username"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-[#303E3F] mb-2">Password *</label>
+                        <div className="relative">
+                          <input
+                            type={showUserPassword ? 'text' : 'password'}
+                            value={newUser.password}
+                            onChange={(e) => setNewUser(prev => ({ ...prev, password: e.target.value }))}
+                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F68949]"
+                            placeholder="Enter password"
+                          />
+                          <button
+                            type="button"
+                            onClick={() => setShowUserPassword(!showUserPassword)}
+                            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-[#303E3F]"
+                          >
+                            {showUserPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                          </button>
+                        </div>
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-[#303E3F] mb-2">Full Name *</label>
+                        <input
+                          type="text"
+                          value={newUser.name}
+                          onChange={(e) => setNewUser(prev => ({ ...prev, name: e.target.value }))}
+                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F68949]"
+                          placeholder="Enter full name"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-[#303E3F] mb-2">Email</label>
+                        <input
+                          type="email"
+                          value={newUser.email}
+                          onChange={(e) => setNewUser(prev => ({ ...prev, email: e.target.value }))}
+                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F68949]"
+                          placeholder="Enter email"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-[#303E3F] mb-2">Role *</label>
+                        <select
+                          value={newUser.role}
+                          onChange={(e) => setNewUser(prev => ({ ...prev, role: e.target.value as UserRole }))}
+                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F68949]"
+                        >
+                          <option value="admin">Admin</option>
+                          <option value="superadmin">Super Admin</option>
+                        </select>
+                      </div>
+                      <div className="flex items-end">
+                        <button
+                          onClick={addUser}
+                          className="w-full bg-[#F68949] text-white px-4 py-2 rounded-lg font-medium hover:bg-[#946F5C] transition-colors flex items-center justify-center"
+                        >
+                          <Plus className="h-4 w-4 mr-2" />
+                          Add User
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Users List */}
+                  <div className="space-y-4">
+                    {users.map((user) => (
+                      <div key={user.id} className="bg-white border border-gray-200 rounded-lg p-6">
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center space-x-4">
+                            <div className="flex items-center space-x-2">
+                              {user.role === 'superadmin' ? 
+                                <Shield className="h-5 w-5 text-yellow-500" /> : 
+                                <User className="h-5 w-5 text-blue-500" />
+                              }
+                              <div>
+                                <h3 className="font-semibold text-[#00393C]">{user.name}</h3>
+                                <p className="text-sm text-[#303E3F]">@{user.username}</p>
+                              </div>
+                            </div>
+                            <div className="text-sm">
+                              <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                                user.role === 'superadmin' 
+                                  ? 'bg-yellow-100 text-yellow-800' 
+                                  : 'bg-blue-100 text-blue-800'
+                              }`}>
+                                {user.role === 'superadmin' ? 'Super Admin' : 'Admin'}
+                              </span>
+                            </div>
+                          </div>
+                          <div className="flex items-center space-x-2">
+                            <button
+                              onClick={() => setEditingUser(user)}
+                              className="text-blue-600 hover:text-blue-800 p-2 rounded-lg hover:bg-blue-50"
+                            >
+                              <Edit className="h-4 w-4" />
+                            </button>
+                            <button
+                              onClick={() => deleteUser(user.id)}
+                              disabled={user.id === currentUser?.id}
+                              className="text-red-600 hover:text-red-800 p-2 rounded-lg hover:bg-red-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                            >
+                              <Trash2 className="h-4 w-4" />
+                            </button>
+                          </div>
+                        </div>
+                        <div className="mt-4 grid grid-cols-1 md:grid-cols-3 gap-4 text-sm text-[#303E3F]">
+                          <div>
+                            <span className="font-medium">Email:</span> {user.email || 'Not provided'}
+                          </div>
+                          <div>
+                            <span className="font-medium">Created:</span> {new Date(user.createdAt).toLocaleDateString()}
+                          </div>
+                          <div>
+                            <span className="font-medium">Last Login:</span> {
+                              user.lastLogin ? new Date(user.lastLogin).toLocaleDateString() : 'Never'
+                            }
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -773,6 +1006,88 @@ const Admin = () => {
                   setEditingItem(null);
                   showNotification('success', 'Article updated successfully!');
                 }}
+                className="px-6 py-2 bg-[#F68949] text-white rounded-lg hover:bg-[#946F5C] transition-colors"
+              >
+                Save Changes
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Edit User Modal */}
+      {editingUser && (
+        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl max-w-md w-full p-6">
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="text-xl font-bold text-[#00393C]">Edit User</h3>
+              <button
+                onClick={() => setEditingUser(null)}
+                className="text-gray-500 hover:text-gray-700"
+              >
+                <X className="h-6 w-6" />
+              </button>
+            </div>
+            
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-[#303E3F] mb-2">Username</label>
+                <input
+                  type="text"
+                  value={editingUser.username}
+                  onChange={(e) => setEditingUser(prev => prev ? ({ ...prev, username: e.target.value }) : null)}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F68949]"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-[#303E3F] mb-2">Password</label>
+                <input
+                  type="password"
+                  value={editingUser.password}
+                  onChange={(e) => setEditingUser(prev => prev ? ({ ...prev, password: e.target.value }) : null)}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F68949]"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-[#303E3F] mb-2">Full Name</label>
+                <input
+                  type="text"
+                  value={editingUser.name}
+                  onChange={(e) => setEditingUser(prev => prev ? ({ ...prev, name: e.target.value }) : null)}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F68949]"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-[#303E3F] mb-2">Email</label>
+                <input
+                  type="email"
+                  value={editingUser.email || ''}
+                  onChange={(e) => setEditingUser(prev => prev ? ({ ...prev, email: e.target.value }) : null)}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F68949]"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-[#303E3F] mb-2">Role</label>
+                <select
+                  value={editingUser.role}
+                  onChange={(e) => setEditingUser(prev => prev ? ({ ...prev, role: e.target.value as UserRole }) : null)}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F68949]"
+                >
+                  <option value="admin">Admin</option>
+                  <option value="superadmin">Super Admin</option>
+                </select>
+              </div>
+            </div>
+
+            <div className="flex justify-end space-x-4 mt-6">
+              <button
+                onClick={() => setEditingUser(null)}
+                className="px-6 py-2 border border-gray-300 rounded-lg text-[#303E3F] hover:bg-gray-50 transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => updateUser(editingUser)}
                 className="px-6 py-2 bg-[#F68949] text-white rounded-lg hover:bg-[#946F5C] transition-colors"
               >
                 Save Changes
