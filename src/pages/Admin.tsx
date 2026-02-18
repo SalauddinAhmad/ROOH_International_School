@@ -272,6 +272,35 @@ const Admin = () => {
                   );
                 })}
               </nav>
+              
+              {/* Logout Button in Sidebar */}
+              <div className="mt-8 pt-6 border-t border-gray-200">
+                <button
+                  onClick={handleLogout}
+                  className="w-full bg-red-600 text-white px-4 py-3 rounded-lg font-medium hover:bg-red-700 transition-colors flex items-center justify-center space-x-2"
+                >
+                  <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                  </svg>
+                  <span>Logout</span>
+                </button>
+                
+                {/* Current User Info */}
+                <div className="mt-4 p-3 bg-gray-50 rounded-lg">
+                  <div className="flex items-center space-x-2">
+                    {currentUser?.role === 'superadmin' ? 
+                      <Shield className="h-4 w-4 text-yellow-500" /> : 
+                      <User className="h-4 w-4 text-blue-500" />
+                    }
+                    <div className="text-sm">
+                      <p className="font-medium text-gray-800">{currentUser?.name}</p>
+                      <p className="text-gray-600 text-xs">
+                        {currentUser?.role === 'superadmin' ? 'Super Admin' : 'Admin'}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 
