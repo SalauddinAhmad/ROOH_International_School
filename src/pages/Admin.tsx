@@ -1,22 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  Settings, 
-  Users, 
-  FileText, 
-  Image, 
-  Calendar, 
-  Phone, 
-  Mail, 
-  MapPin,
-  Save,
-  Edit,
-  Plus,
-  Trash2,
-  Eye,
-  EyeOff,
-  Upload,
-  Download
-} from 'lucide-react';
+import { Settings, Users, FileText, Image, Calendar, Phone, Mail, MapPin, Save, CreditCard as Edit, Plus, Trash2, Eye, EyeOff, Upload, Download } from 'lucide-react';
 
 interface AdminData {
   siteInfo: {
