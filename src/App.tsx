@@ -10,6 +10,7 @@ import CampusLife from './pages/CampusLife';
 import NewsBlog from './pages/NewsBlog';
 import ArticleView from './pages/ArticleView';
 import Contact from './pages/Contact';
+import Admin from './pages/Admin';
 import { useEffect } from 'react';
 
 // Component to scroll to top on route change
@@ -38,6 +39,7 @@ function App() {
             <Route path="/news" element={<NewsBlog />} />
             <Route path="/article/:id" element={<ArticleView />} />
             <Route path="/contact" element={<Contact />} />
+            <Route path="/admin" element={<Admin />} />
           </Routes>
         </main>
         <Footer />

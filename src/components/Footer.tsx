@@ -133,6 +133,9 @@ const Footer = () => {
         <div className="border-t border-[#303E3F] mt-8 pt-8 text-center">
           <p className="text-[#FFE8D2] text-sm">
             © 2024 ROOH International School. All rights reserved.
+            <Link to="/admin" className="ml-4 text-[#F68949] hover:text-white transition-colors">
+              Admin
+            </Link>
           </p>
         </div>
       </div>
