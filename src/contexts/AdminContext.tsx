@@ -170,9 +170,30 @@ export const AdminProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     const savedData = localStorage.getItem('roohAdminData');
     if (savedData) {
       try {
-        setAdminData(JSON.parse(savedData));
+        const parsedData = JSON.parse(savedData);
+        // Deep merge with defaultAdminData to ensure all properties exist
+        const mergedData = {
+          siteInfo: { ...defaultAdminData.siteInfo, ...parsedData.siteInfo },
+          heroSection: {
+            ...defaultAdminData.heroSection,
+            ...parsedData.heroSection,
+            stats: { ...defaultAdminData.heroSection.stats, ...parsedData.heroSection?.stats }
+          },
+          aboutSection: {
+            ...defaultAdminData.aboutSection,
+            ...parsedData.aboutSection,
+            schoolStats: { ...defaultAdminData.aboutSection.schoolStats, ...parsedData.aboutSection?.schoolStats }
+          },
+          programs: Array.isArray(parsedData.programs) ? parsedData.programs : defaultAdminData.programs,
+          news: Array.isArray(parsedData.news) ? parsedData.news : defaultAdminData.news,
+          testimonials: Array.isArray(parsedData.testimonials) ? parsedData.testimonials : defaultAdminData.testimonials,
+          gallery: Array.isArray(parsedData.gallery) ? parsedData.gallery : defaultAdminData.gallery
+        };
+        setAdminData(mergedData);
       } catch (error) {
         console.error('Error loading admin data:', error);
+        // Fallback to default data if parsing fails
+        setAdminData(defaultAdminData);
       }
     }
   }, []);
