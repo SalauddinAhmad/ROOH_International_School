@@ -59,13 +59,13 @@ const Contact = () => {
     {
       icon: <MapPin className="h-6 w-6" />,
       title: "School Address",
-      details: ["Campus 01 - House 35, Road 05, Sector 13, Uttara, Dhaka." , "Campus 02 - House 11, Road 05, Sector 12, Uttara, Dhaka 1230."],
+      details: ["Campus 01 - House 35, Road 05, Sector 13, Uttara, Dhaka-1230" , "Campus 02 - House 11, Road 05, Sector 12, Uttara, Dhaka-1230"],
       action: "Get Directions"
     },
     {
       icon: <Phone className="h-6 w-6" />,
       title: "Phone Numbers",
-      details: ["+880 1896-061644", "+880 1896-061644", "Emergency: +880 1896-061644"],
+      details: ["+880 1896-061644", "+880 1896-061645", "Emergency: +880 1896-061646"],
       action: "Call Now"
     },
     {
@@ -77,7 +77,7 @@ const Contact = () => {
     {
       icon: <Clock className="h-6 w-6" />,
       title: "Office Hours",
-      details: ["Monday - Thursday: 8:00 AM - 4:00 PM", "Friday: 8:00 AM - 12:00 PM", "Saturday: 8:00 AM - 2:00 PM"],
+      details: ["Sunday - Thursday: 8:00 AM - 4:00 PM", "Friday: 8:00 AM - 12:00 PM", "Saturday: 8:00 AM - 2:00 PM"],
       action: "View Calendar"
     }
   ];
@@ -316,14 +316,14 @@ const Contact = () => {
                     <h3 className="text-lg font-bold text-[#00393C]">Visit Our Campus</h3>
                   </div>
                   <p className="text-[#303E3F] mb-4 font-medium">
-                    House 35, Road 05, Sector 13, Uttara, Dhaka
+                    House 35, Road 05, Sector 13, Uttara, Dhaka-1230
                   </p>
                   <h4 className="text-md font-semibold text-[#00393C] mb-3">How to Reach Us:</h4>
                   <ul className="space-y-2 text-[#303E3F] text-sm">
                     <li>• 5 minutes walk from Uttara Metro Station</li>
                     <li>• Bus routes: 15, 25, 35 stop nearby</li>
                     <li>• Ample parking available on campus</li>
-                    <li>• Main entrance on Education Street</li>
+                    <li>• Main entrance on Road 05, Sector 13</li>
                   </ul>
                 </div>
               </div>
@@ -382,7 +382,7 @@ const Contact = () => {
               <div className="space-y-4">
                 <div className="flex items-center space-x-3">
                   <Phone className="h-5 w-5 text-[#F68949]" />
-                  <span>+880 1XXX-XXXXXX</span>
+                  <span>+880 1896-061644</span>
                 </div>
                 <div className="flex items-center space-x-3">
                   <Mail className="h-5 w-5 text-[#F68949]" />
@@ -390,14 +390,14 @@ const Contact = () => {
                 </div>
                 <div className="flex items-center space-x-3">
                   <MessageSquare className="h-5 w-5 text-[#F68949]" />
-                  <span>WhatsApp: +880 1XXX-XXXXXX</span>
+                  <span>WhatsApp: +880 1896-061644</span>
                 </div>
               </div>
               
               <div className="mt-6 pt-6 border-t border-white/20">
                 <p className="text-[#FFE8D2] text-sm">
                   <strong>Emergency Contact:</strong> For urgent matters outside office hours, 
-                  call +880 1XXX-XXXXXX
+                  call +880 1896-061646
                 </p>
               </div>
             </div>

@@ -35,21 +35,21 @@ const HeroSection = () => {
               <div className="text-center">
                 <div className="bg-white/80 backdrop-blur-sm p-4 rounded-lg shadow-lg">
                   <Users className="h-8 w-8 text-[#F68949] mx-auto mb-2" />
-                  <div className="text-2xl font-bold text-[#00393C]">500+</div>
+                  <div className="text-2xl font-bold text-[#00393C]">650+</div>
                   <div className="text-sm text-[#303E3F]">Students</div>
                 </div>
               </div>
               <div className="text-center">
                 <div className="bg-white/80 backdrop-blur-sm p-4 rounded-lg shadow-lg">
                   <BookOpen className="h-8 w-8 text-[#F68949] mx-auto mb-2" />
-                  <div className="text-2xl font-bold text-[#00393C]">25+</div>
+                  <div className="text-2xl font-bold text-[#00393C]">35+</div>
                   <div className="text-sm text-[#303E3F]">Teachers</div>
                 </div>
               </div>
               <div className="text-center">
                 <div className="bg-white/80 backdrop-blur-sm p-4 rounded-lg shadow-lg">
                   <Award className="h-8 w-8 text-[#F68949] mx-auto mb-2" />
-                  <div className="text-2xl font-bold text-[#00393C]">10+</div>
+                  <div className="text-2xl font-bold text-[#00393C]">11+</div>
                   <div className="text-sm text-[#303E3F]">Years</div>
                 </div>
               </div>

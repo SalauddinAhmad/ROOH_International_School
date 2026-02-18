@@ -87,19 +87,20 @@ const About = () => {
                 </p>
                 <p>
                   "At ROOH, we are committed to creating an environment where students feel 
-                  safe, supported, and inspired to reach their full potential. Our dedicated 
+                <div className="text-4xl font-bold text-[#F68949] mb-2">11+</div>
                   team of educators works tirelessly to ensure that each student receives 
                   personalized attention and guidance."
                 </p>
-                <p>
+                <div className="text-4xl font-bold text-[#F68949] mb-2">650+</div>
                   "We believe in the power of collaboration between school, parents, and 
                   community to create meaningful learning experiences that prepare our 
                   students for the challenges and opportunities of tomorrow."
-                </p>
+                <div className="text-4xl font-bold text-[#F68949] mb-2">35+</div>
               </div>
               <div className="mt-6">
                 <h4 className="font-bold text-[#00393C]">Dr. Aminul Islam</h4>
-                <p className="text-[#946F5C]">Principal, ROOH International School</p>
+                <div className="text-4xl font-bold text-[#F68949] mb-2">7</div>
+                <p className="text-[#303E3F] text-sm mt-1">M.Ed, PhD in Educational Leadership</p>
               </div>
             </div>
           </div>

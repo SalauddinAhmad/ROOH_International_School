@@ -91,13 +91,13 @@ const Footer = () => {
               <div className="flex items-start space-x-2">
                 <MapPin className="h-5 w-5 text-[#F68949] mt-1 flex-shrink-0" />
                 <p className="text-[#FFE8D2] text-sm">
-                  123 Education Street,<br />
-                  Dhaka, Bangladesh
+                  House 35, Road 05, Sector 13,<br />
+                  Uttara, Dhaka-1230, Bangladesh
                 </p>
               </div>
               <div className="flex items-center space-x-2">
                 <Phone className="h-5 w-5 text-[#F68949]" />
-                <p className="text-[#FFE8D2] text-sm">+880 1XXX-XXXXXX</p>
+                <p className="text-[#FFE8D2] text-sm">+880 1896-061644</p>
               </div>
               <div className="flex items-center space-x-2">
                 <Mail className="h-5 w-5 text-[#F68949]" />

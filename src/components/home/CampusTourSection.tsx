@@ -105,7 +105,7 @@ const CampusTourSection = () => {
               <div className="space-y-3">
                 <div className="flex items-center space-x-3">
                   <Phone className="h-5 w-5 text-[#F68949]" />
-                  <span>+880 1XXX-XXXXXX</span>
+                  <span>+880 1896-061644</span>
                 </div>
                 <div className="flex items-center space-x-3">
                   <Mail className="h-5 w-5 text-[#F68949]" />
@@ -113,7 +113,7 @@ const CampusTourSection = () => {
                 </div>
                 <div className="flex items-center space-x-3">
                   <MapPin className="h-5 w-5 text-[#F68949]" />
-                  <span>123 Education Street, Dhaka</span>
+                  <span>House 35, Road 05, Sector 13, Uttara, Dhaka</span>
                 </div>
               </div>
             </div>

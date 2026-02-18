@@ -23,12 +23,12 @@ const Header = () => {
           <div className="flex items-center space-x-4">
             <span className="flex items-center">
               <Phone className="h-4 w-4 mr-1" />
-              +880 1XXX-XXXXXX
+              +880 1896-061644
             </span>
             <span>Email: info@roohschool.edu.bd</span>
           </div>
           <div className="hidden md:block">
-            <span>Admissions Open for 2025 - Apply Now!</span>
+            <span>Admissions Open for 2024-25 - Apply Now!</span>
           </div>
         </div>
       </div>
