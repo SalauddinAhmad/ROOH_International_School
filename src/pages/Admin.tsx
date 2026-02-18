@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Settings, Users, FileText, Image, Calendar, Phone, Mail, MapPin, Save, Edit, Plus, Trash2, Eye, EyeOff, Upload, Download, Shield, User, AlertTriangle, CheckCircle } from 'lucide-react';
+import { Settings, Users, FileText, Image, Calendar, Phone, Mail, MapPin, Save, CreditCard as Edit, Plus, Trash2, Eye, EyeOff, Upload, Download, Shield, User, AlertTriangle, CheckCircle } from 'lucide-react';
 import { useAdmin } from '../contexts/AdminContext';
 
 type UserRole = 'superadmin' | 'admin';
