@@ -248,6 +248,53 @@ const Admin = () => {
           </button>
 
           <button
+            onClick={() => setActiveSection('programs')}
+            className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors ${
+              activeSection === 'programs' 
+                ? 'bg-[#F68949] text-white' 
+                : 'text-[#303E3F] hover:bg-[#FFE8D2]'
+            }`}
+          >
+            <BookOpen className="h-5 w-5" />
+            <span>Programs</span>
+          </button>
+
+          <button
+            onClick={() => setActiveSection('news')}
+            className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors ${
+              activeSection === 'news' 
+                ? 'bg-[#F68949] text-white' 
+                : 'text-[#303E3F] hover:bg-[#FFE8D2]'
+            }`}
+          >
+            <FileText className="h-5 w-5" />
+            <span>News & Blog</span>
+          </button>
+
+          <button
+            onClick={() => setActiveSection('testimonials')}
+            className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors ${
+              activeSection === 'testimonials' 
+                ? 'bg-[#F68949] text-white' 
+                : 'text-[#303E3F] hover:bg-[#FFE8D2]'
+            }`}
+          >
+            <Star className="h-5 w-5" />
+            <span>Testimonials</span>
+          </button>
+
+          <button
+            onClick={() => setActiveSection('gallery')}
+            className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors ${
+              activeSection === 'gallery' 
+                ? 'bg-[#F68949] text-white' 
+                : 'text-[#303E3F] hover:bg-[#FFE8D2]'
+            }`}
+          >
+            <Image className="h-5 w-5" />
+            <span>Gallery</span>
+          </button>
+          <button
             onClick={() => setActiveSection('contactInfo')}
             className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors ${
               activeSection === 'contactInfo' 
@@ -258,6 +305,20 @@ const Admin = () => {
             <Phone className="h-5 w-5" />
             <span>Contact Info</span>
           </button>
+
+          {currentUser?.role === 'superadmin' && (
+            <button
+              onClick={() => setActiveSection('userManagement')}
+              className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors ${
+                activeSection === 'userManagement' 
+                  ? 'bg-[#F68949] text-white' 
+                  : 'text-[#303E3F] hover:bg-[#FFE8D2]'
+              }`}
+            >
+              <Shield className="h-5 w-5" />
+              <span>User Management</span>
+            </button>
+          )}
         </nav>
 
         {/* Quick Actions */}
@@ -399,6 +460,42 @@ const Admin = () => {
                   <Phone className="h-6 w-6 mb-2" />
                   <h3 className="font-semibold">Contact Info</h3>
                   <p className="text-sm opacity-75">Manage contact details</p>
+                </button>
+
+                <button
+                  onClick={() => setActiveSection('programs')}
+                  className="p-4 bg-[#FFE8D2] rounded-lg hover:bg-[#F68949] hover:text-white transition-colors text-left"
+                >
+                  <BookOpen className="h-6 w-6 mb-2" />
+                  <h3 className="font-semibold">Programs</h3>
+                  <p className="text-sm opacity-75">Manage academic programs</p>
+                </button>
+
+                <button
+                  onClick={() => setActiveSection('news')}
+                  className="p-4 bg-[#FFE8D2] rounded-lg hover:bg-[#F68949] hover:text-white transition-colors text-left"
+                >
+                  <FileText className="h-6 w-6 mb-2" />
+                  <h3 className="font-semibold">News & Blog</h3>
+                  <p className="text-sm opacity-75">Manage articles and posts</p>
+                </button>
+
+                <button
+                  onClick={() => setActiveSection('testimonials')}
+                  className="p-4 bg-[#FFE8D2] rounded-lg hover:bg-[#F68949] hover:text-white transition-colors text-left"
+                >
+                  <Star className="h-6 w-6 mb-2" />
+                  <h3 className="font-semibold">Testimonials</h3>
+                  <p className="text-sm opacity-75">Manage testimonials</p>
+                </button>
+
+                <button
+                  onClick={() => setActiveSection('gallery')}
+                  className="p-4 bg-[#FFE8D2] rounded-lg hover:bg-[#F68949] hover:text-white transition-colors text-left"
+                >
+                  <Image className="h-6 w-6 mb-2" />
+                  <h3 className="font-semibold">Gallery</h3>
+                  <p className="text-sm opacity-75">Manage photo gallery</p>
                 </button>
               </div>
             </div>
