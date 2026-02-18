@@ -60,8 +60,7 @@ const NewsSection = () => {
             Latest News & Events
           </h2>
           <p className="text-xl text-[#303E3F] max-w-3xl mx-auto">
-            Stay updated with the latest happenings, events, and important announcements 
-            from ROOH International School community.
+            Stay updated with the latest happenings, events, achievements, and important announcements from ROOH International School community and activities.
           </p>
         </div>
 

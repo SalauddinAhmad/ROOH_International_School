@@ -7,32 +7,32 @@ const ProgramsSection = () => {
       icon: <Baby className="h-12 w-12" />,
       title: "Playgroup",
       age: "2-3 Years",
-      description: "Introduction to learning through play-based activities and social interaction.",
-      subjects: ["Basic English", "Numbers", "Colors & Shapes", "Art & Craft"],
+      description: "Introduction to learning through play-based activities, social interaction and basic skill development.",
+      subjects: ["Play Activities", "Basic Communication", "Motor Skills", "Social Skills"],
       color: "from-[#FFE8D2] to-[#F68949]"
     },
     {
       icon: <Users className="h-12 w-12" />,
       title: "Nursery",
       age: "3-4 Years",
-      description: "Building foundation skills through structured learning and creative play.",
-      subjects: ["Phonics", "Math Concepts", "Science Basics", "Creative Arts"],
+      description: "Building foundation skills through structured learning, creative play and early academic concepts.",
+      subjects: ["Pre-Reading Skills", "Number Recognition", "Creative Arts", "Physical Development"],
       color: "from-[#F68949] to-[#946F5C]"
     },
     {
       icon: <BookOpen className="h-12 w-12" />,
       title: "KG-1 & KG-2",
       age: "4-6 Years",
-      description: "Comprehensive preparation for formal education with focus on core subjects.",
-      subjects: ["Reading & Writing", "Mathematics", "General Knowledge", "Physical Education"],
+      description: "Comprehensive preparation for formal education with focus on reading, writing and mathematical concepts.",
+      subjects: ["Reading & Writing", "Basic Mathematics", "Environmental Studies", "Arts & Crafts"],
       color: "from-[#946F5C] to-[#303E3F]"
     },
     {
       icon: <GraduationCap className="h-12 w-12" />,
       title: "Grade 1-5",
       age: "6-11 Years",
-      description: "Complete primary education following national and international standards.",
-      subjects: ["English", "Mathematics", "Science", "Social Studies", "Computer"],
+      description: "Complete primary education following national curriculum with international teaching methodologies.",
+      subjects: ["English", "Mathematics", "Science", "Social Studies", "Computer Studies"],
       color: "from-[#303E3F] to-[#00393C]"
     }
   ];

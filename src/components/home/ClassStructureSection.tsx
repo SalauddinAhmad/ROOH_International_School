@@ -70,8 +70,7 @@ const ClassStructureSection = () => {
             Class Structure & Age Groups
           </h2>
           <p className="text-xl text-[#303E3F] max-w-3xl mx-auto">
-            Well-organized class structure ensuring appropriate learning environments 
-            for different age groups with optimal student-teacher ratios.
+            Well-organized class structure ensuring appropriate learning environments for different age groups with optimal student-teacher ratios and age-appropriate curriculum.
           </p>
         </div>
 

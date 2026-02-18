@@ -36,8 +36,7 @@ const CampusTourSection = () => {
             Request a Campus Tour
           </h2>
           <p className="text-xl text-[#303E3F] max-w-3xl mx-auto">
-            Experience our learning environment firsthand. Schedule a personalized campus tour 
-            to see our facilities, meet our teachers, and discover what makes ROOH special.
+            Experience our learning environment firsthand. Schedule a personalized campus tour to see our facilities, meet our teachers, and discover what makes ROOH International School special.
           </p>
         </div>
 

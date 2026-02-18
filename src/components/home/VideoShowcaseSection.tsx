@@ -80,8 +80,7 @@ const VideoShowcaseSection = () => {
             Video Showcase
           </h2>
           <p className="text-xl text-[#303E3F] max-w-3xl mx-auto">
-            Experience ROOH International School through our video collection showcasing 
-            campus life, events, and educational excellence.
+            Experience ROOH International School through our video collection showcasing campus life, educational activities, events, and student achievements.
           </p>
         </div>
 

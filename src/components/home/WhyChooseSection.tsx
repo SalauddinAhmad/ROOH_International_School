@@ -5,33 +5,33 @@ const WhyChooseSection = () => {
   const features = [
     {
       icon: <Star className="h-8 w-8" />,
-      title: "Excellence in Education",
-      description: "Our curriculum is designed to meet international standards while maintaining local cultural values."
+      title: "Academic Excellence",
+      description: "Our curriculum is designed to meet international standards while maintaining local cultural values and providing comprehensive education."
     },
     {
       icon: <Users className="h-8 w-8" />,
       title: "Experienced Faculty",
-      description: "Dedicated teachers with years of experience in nurturing young minds and fostering creativity."
+      description: "Highly qualified and dedicated teachers with years of experience in nurturing young minds and fostering creativity in students."
     },
     {
       icon: <Globe className="h-8 w-8" />,
-      title: "Global Perspective",
-      description: "Preparing students for a globalized world with international exposure and modern teaching methods."
+      title: "Modern Facilities",
+      description: "State-of-the-art facilities including science labs, computer rooms, library, and sports facilities for comprehensive development."
     },
     {
       icon: <Heart className="h-8 w-8" />,
       title: "Holistic Development",
-      description: "Focus on emotional, social, and physical development alongside academic excellence."
+      description: "Focus on emotional, social, physical and intellectual development alongside academic excellence for well-rounded growth."
     },
     {
       icon: <BookOpen className="h-8 w-8" />,
-      title: "Modern Curriculum",
-      description: "Updated curriculum that incorporates technology and innovative teaching methodologies."
+      title: "Individual Attention",
+      description: "Small class sizes ensuring personalized attention and care for each student's unique learning needs and potential."
     },
     {
       icon: <Trophy className="h-8 w-8" />,
-      title: "Achievement Record",
-      description: "Proven track record of student achievements in academics, sports, and extracurricular activities."
+      title: "Safe Environment",
+      description: "Secure and nurturing environment with proper safety measures and caring staff to ensure student well-being."
     }
   ];
 

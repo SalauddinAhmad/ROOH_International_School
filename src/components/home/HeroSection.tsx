@@ -10,12 +10,12 @@ const HeroSection = () => {
           <div className="space-y-8">
             <div>
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-[#00393C] mb-6 leading-tight">
-                Nurturing Tomorrow's
-                <span className="text-[#946F5C] block">Leaders Today</span>
+                Nurturing
+                <span className="text-[#946F5C] block">Tomorrow's</span>
+                <span className="text-[#00393C] block">Leaders Today</span>
               </h1>
               <p className="text-xl text-[#303E3F] mb-8 leading-relaxed">
-                At ROOH International School, we provide world-class education 
-                with a focus on character development, creativity, and academic excellence.
+                At ROOH International School, we provide world-class education that nurtures young minds with excellence in education, character development, and holistic growth for a brighter future.
               </p>
             </div>
 

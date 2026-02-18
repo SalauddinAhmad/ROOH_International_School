@@ -61,8 +61,7 @@ const TestimonialsSection = () => {
             Parents' Trust & Testimonials
           </h2>
           <p className="text-xl text-[#FFE8D2] max-w-3xl mx-auto">
-            Hear what parents have to say about their experience with 
-            ROOH International School and how we've impacted their children's lives.
+            Hear what parents have to say about their experience with ROOH International School and how we've positively impacted their children's educational journey and overall development.
           </p>
         </div>
 

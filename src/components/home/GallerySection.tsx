@@ -83,8 +83,7 @@ const GallerySection = () => {
             School Gallery
           </h2>
           <p className="text-xl text-[#303E3F] max-w-3xl mx-auto">
-            Take a glimpse into our vibrant school life, modern facilities, 
-            and the joyful learning experiences of our students.
+            Take a glimpse into our vibrant school life, modern facilities, and the joyful learning experiences of our students through our photo gallery.
           </p>
         </div>
 
