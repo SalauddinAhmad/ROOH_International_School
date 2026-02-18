@@ -1,25 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  Settings, 
-  Users, 
-  FileText, 
-  Image, 
-  Phone, 
-  Shield, 
-  User,
-  Save,
-  Download,
-  LogOut,
-  Eye,
-  EyeOff,
-  Star,
-  Plus,
-  Edit,
-  Trash2,
-  Mail,
-  MapPin,
-  Clock
-} from 'lucide-react';
+import { Settings, Users, FileText, Image, Phone, Shield, User, Save, Download, LogOut, Eye, EyeOff, Star, Plus, CreditCard as Edit, Trash2, Mail, MapPin, Clock } from 'lucide-react';
 import { useAdmin } from '../contexts/AdminContext';
 
 interface AdminUser {
