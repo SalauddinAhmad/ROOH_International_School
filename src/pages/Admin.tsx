@@ -216,12 +216,25 @@ const Admin = () => {
                 }
                 <span className="text-sm">{currentUser?.name}</span>
               </div>
+              <div className="flex items-center space-x-2 bg-white/10 px-3 py-2 rounded-lg">
+                {currentUser?.role === 'superadmin' ? 
+                  <Shield className="h-4 w-4 text-yellow-400" /> : 
+                  <User className="h-4 w-4 text-blue-400" />
+                }
+                <span className="text-sm">{currentUser?.name}</span>
+              </div>
               <button
                 onClick={saveData}
                 className="bg-[#F68949] px-4 py-2 rounded-lg font-medium hover:bg-[#946F5C] transition-colors flex items-center"
               >
                 <Save className="h-4 w-4 mr-2" />
                 Save Changes
+              </button>
+              <button
+                onClick={handleLogout}
+                className="bg-red-600 px-4 py-2 rounded-lg font-medium hover:bg-red-700 transition-colors"
+              >
+                Logout
               </button>
               <button
                 onClick={handleLogout}
