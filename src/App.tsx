@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { AdminProvider } from './contexts/AdminContext';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import ScrollToTop from './components/ScrollToTop';
@@ -26,26 +27,28 @@ function ScrollToTopOnRouteChange() {
 
 function App() {
   return (
-    <Router>
-      <div className="min-h-screen bg-white">
-        <ScrollToTopOnRouteChange />
-        <Header />
-        <main>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/academics" element={<Academics />} />
-            <Route path="/campus-life" element={<CampusLife />} />
-            <Route path="/news" element={<NewsBlog />} />
-            <Route path="/article/:id" element={<ArticleView />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="/admin" element={<Admin />} />
-          </Routes>
-        </main>
-        <Footer />
-        <ScrollToTop />
-      </div>
-    </Router>
+    <AdminProvider>
+      <Router>
+        <div className="min-h-screen bg-white">
+          <ScrollToTopOnRouteChange />
+          <Header />
+          <main>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/academics" element={<Academics />} />
+              <Route path="/campus-life" element={<CampusLife />} />
+              <Route path="/news" element={<NewsBlog />} />
+              <Route path="/article/:id" element={<ArticleView />} />
+              <Route path="/contact" element={<Contact />} />
+              <Route path="/admin" element={<Admin />} />
+            </Routes>
+          </main>
+          <Footer />
+          <ScrollToTop />
+        </div>
+      </Router>
+    </AdminProvider>
   );
 }
 

@@ -1,7 +1,10 @@
 import React from 'react';
 import { ArrowRight, Users, BookOpen, Award } from 'lucide-react';
+import { useAdmin } from '../../contexts/AdminContext';
 
 const HeroSection = () => {
+  const { adminData } = useAdmin();
+
   return (
     <section className="relative bg-gradient-to-br from-[#FFE8D2] to-[#F68949] min-h-screen flex items-center -mt-[88px] pt-[88px]">
       <div className="max-w-7xl mx-auto px-4 py-20">
@@ -10,12 +13,14 @@ const HeroSection = () => {
           <div className="space-y-8">
             <div>
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-[#00393C] mb-6 leading-tight">
-                Nurturing
-                <span className="text-[#946F5C] block">Tomorrow's</span>
-                <span className="text-[#00393C] block">Leaders Today</span>
+                {adminData.heroSection.title.split(' ').map((word, index) => {
+                  if (index === 1) return <span key={index} className="text-[#946F5C] block">{word}</span>;
+                  if (index === 2) return <span key={index} className="text-[#00393C] block">{word} </span>;
+                  return <span key={index}>{word} </span>;
+                })}
               </h1>
               <p className="text-xl text-[#303E3F] mb-8 leading-relaxed">
-                At ROOH International School, we provide world-class education that nurtures young minds with excellence in education, character development, and holistic growth for a brighter future.
+                {adminData.heroSection.description}
               </p>
             </div>
 
@@ -35,21 +40,21 @@ const HeroSection = () => {
               <div className="text-center">
                 <div className="bg-white/80 backdrop-blur-sm p-4 rounded-lg shadow-lg">
                   <Users className="h-8 w-8 text-[#F68949] mx-auto mb-2" />
-                  <div className="text-2xl font-bold text-[#00393C]">650+</div>
+                  <div className="text-2xl font-bold text-[#00393C]">{adminData.heroSection.stats.students}</div>
                   <div className="text-sm text-[#303E3F]">Students</div>
                 </div>
               </div>
               <div className="text-center">
                 <div className="bg-white/80 backdrop-blur-sm p-4 rounded-lg shadow-lg">
                   <BookOpen className="h-8 w-8 text-[#F68949] mx-auto mb-2" />
-                  <div className="text-2xl font-bold text-[#00393C]">35+</div>
+                  <div className="text-2xl font-bold text-[#00393C]">{adminData.heroSection.stats.teachers}</div>
                   <div className="text-sm text-[#303E3F]">Teachers</div>
                 </div>
               </div>
               <div className="text-center">
                 <div className="bg-white/80 backdrop-blur-sm p-4 rounded-lg shadow-lg">
                   <Award className="h-8 w-8 text-[#F68949] mx-auto mb-2" />
-                  <div className="text-2xl font-bold text-[#00393C]">11+</div>
+                  <div className="text-2xl font-bold text-[#00393C]">{adminData.heroSection.stats.years}</div>
                   <div className="text-sm text-[#303E3F]">Years</div>
                 </div>
               </div>
@@ -66,7 +71,7 @@ const HeroSection = () => {
               />
               <div className="absolute -bottom-4 -left-4 bg-[#00393C] text-white p-6 rounded-xl shadow-lg">
                 <div className="text-sm font-medium">Established</div>
-                <div className="text-2xl font-bold">2014</div>
+                <div className="text-2xl font-bold">{adminData.siteInfo.establishedYear}</div>
               </div>
             </div>
           </div>
