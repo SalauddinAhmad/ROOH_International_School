@@ -82,12 +82,12 @@ import { Settings, FileText, Image, User, Calendar, MessageSquare, Camera, Phone
     title: string;
     category: string;
     imageUrl: string;
-  }>;
-  contactInfo: {
+    subtitle: string;
+    tagline: string;
     phone: string;
     email: string;
     address: string;
-    officeHours: string;
+    establishedYear: string;
     emergencyContact: string;
   };
 }
