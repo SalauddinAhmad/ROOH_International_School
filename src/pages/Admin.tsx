@@ -10,7 +10,11 @@ interface User {
   password: string;
   role: UserRole;
   name: string;
-  email?: string;
+  LogOut,
+  Users,
+  Plus,
+  Edit,
+  Trash2
   createdAt: string;
   lastLogin?: string;
 }
