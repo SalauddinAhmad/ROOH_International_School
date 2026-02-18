@@ -1,24 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  Settings, 
-  FileText, 
-  Image, 
-  User, 
-  Calendar, 
-  MessageSquare, 
-  Camera, 
-  Phone,
-  Users,
-  Plus,
-  Edit,
-  Trash2,
-  Save,
-  LogOut,
-  Shield,
-  Star,
-  Eye,
-  EyeOff
-} from 'lucide-react';
+import { Settings, FileText, Image, User, Calendar, MessageSquare, Camera, Phone, Users, Plus, CreditCard as Edit, Trash2, Save, LogOut, Shield, Star, Eye, EyeOff } from 'lucide-react';
 
 interface User {
   id: string;
