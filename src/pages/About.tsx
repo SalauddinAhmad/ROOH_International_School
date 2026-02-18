@@ -12,7 +12,8 @@ const About = () => {
           </h1>
           <p className="text-xl text-[#303E3F] max-w-3xl mx-auto">
             Established in 2014, ROOH International School has been dedicated to 
-            providing world-class education that nurtures young minds and builds strong characters.
+            providing world-class education that nurtures young minds and builds 
+            strong characters.
           </p>
         </div>
       </section>
@@ -28,9 +29,8 @@ const About = () => {
               </div>
               <h2 className="text-2xl font-bold text-[#00393C] mb-4">Our Vision</h2>
               <p className="text-[#303E3F] leading-relaxed">
-                To be a leading educational institution that empowers students to become 
-                confident, creative, and compassionate global citizens who contribute 
-                positively to society.
+                To be a leading educational institution that empowers students to become confident, 
+                creative, and compassionate global citizens who contribute positively to society.
               </p>
             </div>
 
@@ -41,9 +41,8 @@ const About = () => {
               </div>
               <h2 className="text-2xl font-bold text-[#00393C] mb-4">Our Mission</h2>
               <p className="text-[#303E3F] leading-relaxed">
-                To provide excellent education in a nurturing environment that fosters 
-                intellectual curiosity, moral integrity, and social responsibility while 
-                celebrating diversity and individual potential.
+                To provide excellent education in a nurturing environment that fosters intellectual curiosity, 
+                moral integrity, and social responsibility while celebrating diversity and individual potential.
               </p>
             </div>
 
@@ -54,53 +53,56 @@ const About = () => {
               </div>
               <h2 className="text-2xl font-bold text-[#00393C] mb-4">Core Values</h2>
               <p className="text-[#303E3F] leading-relaxed">
-                Excellence, Integrity, Respect, Innovation, and Community. These values 
-                guide everything we do and help shape the character of our students 
-                and school community.
+                Excellence, Integrity, Respect, Innovation, and Community. These values guide everything we 
+                do and help shape the character of our students and school community.
               </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Principal's Message */}
+      {/* Vice Principal's Message */}
       <section className="py-20 bg-[#FFE8D2]">
         <div className="max-w-7xl mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-[#00393C] mb-4">
+              Message from the Vice Principal
+            </h2>
+          </div>
+          
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <img
-                src="https://images.pexels.com/photos/5212317/pexels-photo-5212317.jpeg"
-                alt="Principal"
-                className="w-full h-96 object-cover rounded-2xl shadow-lg"
-              />
+            <div className="flex justify-center">
+              <div className="relative">
+                <img
+                  src="https://images.pexels.com/photos/5212317/pexels-photo-5212317.jpeg"
+                  alt="Vice Principal"
+                  className="w-80 h-96 object-cover rounded-2xl shadow-lg"
+                />
+              </div>
             </div>
             <div>
-              <h2 className="text-3xl font-bold text-[#00393C] mb-6">
-                Message from the Principal
-              </h2>
               <div className="space-y-4 text-[#303E3F] leading-relaxed">
                 <p>
                   "Welcome to ROOH International School, where every child's journey of 
-                  discovery begins. As an educator with over 15 years of experience, I 
-                  believe that education is not just about academic achievement, but about 
+                  discovery begins. As an educator with over 15 years of experience, I believe 
+                  that education is not just about academic achievement, but about 
                   nurturing the whole child."
                 </p>
                 <p>
-                  "At ROOH, we are committed to creating an environment where students feel 
-                <div className="text-4xl font-bold text-[#F68949] mb-2">11+</div>
-                  team of educators works tirelessly to ensure that each student receives 
-                  personalized attention and guidance."
+                  "At ROOH, we are committed to creating an environment where students 
+                  feel safe, supported, and inspired to reach their full potential. Our 
+                  dedicated team of educators works tirelessly to ensure that each student 
+                  receives personalized attention and guidance."
                 </p>
-                <div className="text-4xl font-bold text-[#F68949] mb-2">650+</div>
+                <p>
                   "We believe in the power of collaboration between school, parents, and 
                   community to create meaningful learning experiences that prepare our 
                   students for the challenges and opportunities of tomorrow."
-                <div className="text-4xl font-bold text-[#F68949] mb-2">35+</div>
+                </p>
               </div>
               <div className="mt-6">
-                <h4 className="font-bold text-[#00393C]">Dr. Aminul Islam</h4>
-                <div className="text-4xl font-bold text-[#F68949] mb-2">7</div>
-                <p className="text-[#303E3F] text-sm mt-1">M.Ed, PhD in Educational Leadership</p>
+                <h4 className="font-bold text-[#00393C] text-lg">Sadiqun Nahar</h4>
+                <p className="text-[#946F5C] font-medium">Vice Principal, ROOH International School</p>
               </div>
             </div>
           </div>
@@ -115,19 +117,19 @@ const About = () => {
               School Overview
             </h2>
             <p className="text-xl text-[#303E3F] max-w-3xl mx-auto">
-              A comprehensive look at what makes ROOH International School 
-              a unique and excellent choice for your child's education.
+              A comprehensive look at what makes ROOH International School a unique 
+              and excellent choice for your child's education.
             </p>
           </div>
 
           {/* Statistics */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-16">
             <div className="text-center">
-              <div className="text-4xl font-bold text-[#F68949] mb-2">10+</div>
+              <div className="text-4xl font-bold text-[#F68949] mb-2">6+</div>
               <div className="text-[#303E3F]">Years of Excellence</div>
             </div>
             <div className="text-center">
-              <div className="text-4xl font-bold text-[#F68949] mb-2">500+</div>
+              <div className="text-4xl font-bold text-[#F68949] mb-2">150+</div>
               <div className="text-[#303E3F]">Happy Students</div>
             </div>
             <div className="text-center">
@@ -135,19 +137,19 @@ const About = () => {
               <div className="text-[#303E3F]">Qualified Teachers</div>
             </div>
             <div className="text-center">
-              <div className="text-4xl font-bold text-[#F68949] mb-2">8</div>
+              <div className="text-4xl font-bold text-[#F68949] mb-2">5</div>
               <div className="text-[#303E3F]">Grade Levels</div>
             </div>
           </div>
 
           {/* Features */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="bg-[#FFE8D2] p-8 rounded-2xl text-center">
               <Users className="h-12 w-12 text-[#F68949] mx-auto mb-4" />
               <h3 className="text-xl font-bold text-[#00393C] mb-4">Small Class Sizes</h3>
               <p className="text-[#303E3F]">
-                Optimal student-teacher ratios ensure personalized attention and 
-                better learning outcomes for every student.
+                Optimal student-teacher ratios ensure personalized attention and better 
+                learning outcomes for every student.
               </p>
             </div>
 
@@ -155,8 +157,8 @@ const About = () => {
               <BookOpen className="h-12 w-12 mx-auto mb-4" />
               <h3 className="text-xl font-bold mb-4">Modern Curriculum</h3>
               <p>
-                International standards curriculum combined with local cultural 
-                values to provide well-rounded education.
+                International standards curriculum combined with local cultural values to 
+                provide well-rounded education.
               </p>
             </div>
 
@@ -172,8 +174,8 @@ const About = () => {
         </div>
       </section>
 
-      {/* History Timeline */}
-      <section className="py-20 bg-[#00393C] text-white mb-8">
+      {/* Our Journey Timeline */}
+      <section className="py-20 bg-[#00393C] text-white">
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold mb-4">Our Journey</h2>
@@ -189,7 +191,8 @@ const About = () => {
               </div>
               <h3 className="text-lg font-bold mb-2">Foundation</h3>
               <p className="text-[#FFE8D2] text-sm">
-                ROOH International School was established with a vision to provide quality education.
+                ROOH International School was established with a vision to provide 
+                world-class education.
               </p>
             </div>
 
